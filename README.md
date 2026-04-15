@@ -1,4 +1,4 @@
-# IS-Research-Suit
+# IS-Research-Suite
 My personal stack of tools to navigate in the bittensor world.
 
 ---
