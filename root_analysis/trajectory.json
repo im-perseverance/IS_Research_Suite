@@ -1,0 +1,14 @@
+[
+  {
+    "date": "2026-04-15",
+    "block": 7973925,
+    "active_validators": 8,
+    "ghost_validators": 30,
+    "top_validator_uid": 55,
+    "top_validator_hotkey": "5E4z3h9yVhmQyCFWNbY9BPpwhx4xFiPwq3eeqmBgVF6KULde",
+    "top_validator_name": "",
+    "top_yield": 1.3397538701637342e-05,
+    "top_div": 0.10218966752290726,
+    "top_take": 0.0899977111467155
+  }
+]
