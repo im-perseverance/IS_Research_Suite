@@ -1,0 +1,41 @@
+name: Root Analysis
+
+on:
+  schedule:
+    - cron: '0 12 1 * *'
+  workflow_dispatch:
+    inputs:
+      stake:
+        description: 'Your intended stake in TAO'
+        required: true
+        type: number
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install bittensor
+
+      - name: Run root analysis
+        run: python root_analysis.py --stake ${{ github.event.inputs.stake || 100 }}
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add root_analysis/
+          DATE=$(date -u +%Y-%m-%d)
+          git commit -m "Root analysis ${DATE}" || echo "No changes to commit"
+          git pull --rebase
+          git push
