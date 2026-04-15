@@ -1,0 +1,33 @@
+[
+  {
+    "date": "2026-04-15",
+    "block": 7973928,
+    "spot_price": 0.085537071,
+    "moving_price": 0.08627764438278973,
+    "alpha_outstanding": 2477814.616101622,
+    "tao_reserves": 215377.138918603,
+    "tao_per_block": 0.0,
+    "momentum_30d": -0.008583606890146516,
+    "price_apy_30d": -0.10443388383011594,
+    "net_supply_delta": null,
+    "validator_e_shares": {
+      "1": 0.0,
+      "6": 0.0,
+      "8": 0.0,
+      "46": 0.0,
+      "69": 0.0,
+      "71": 0.0,
+      "84": 0.0,
+      "127": 0.0,
+      "159": 0.0,
+      "205": 0.0,
+      "234": 0.0,
+      "252": 0.0
+    },
+    "top_validator_uid": 1,
+    "top_validator_hotkey": "5Dt7HZ7Zpw4DppPxFM7Ke3Cm7sDAWhsZXmM5ZAmE7dSVJbcQ",
+    "top_combined_apy_30d": -0.10443388383011594,
+    "top_combined_real_apy_30d": null,
+    "top_emission_apy": 0.0
+  }
+]
