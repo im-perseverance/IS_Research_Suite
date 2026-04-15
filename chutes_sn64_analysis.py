@@ -2097,8 +2097,8 @@ def run_analysis(root_tao_threshold: float, sn64_alpha_threshold: float, alpha_m
             ge_str   = f"{ge*100:.1f}%" if ge is not None else "N/A"
             nd = e.get('net_supply_delta_annual')
             nd_str   = f"{nd*100:+.1f}%" if nd is not None else "N/A"
-            bt = e.get('burned_tokens')
-            bt_str   = fmt_large(bt) if bt is not None else "N/A"
+            bt_val = e.get('burned_tokens')
+            bt_str   = fmt_large(bt_val) if bt_val is not None else "N/A"
             sd = e.get('supply_defence')
             sd_str   = f"{sd*100:.0f}%" if sd is not None else "N/A"
             tao_rsv  = fmt_large(e.get('tao_reserves')) if e.get('tao_reserves') else "N/A"
