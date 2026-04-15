@@ -1,0 +1,21 @@
+[
+  {
+    "date": "2026-04-15",
+    "block": 7973927,
+    "inflation_median_annual": null,
+    "inflation_mean_annual": null,
+    "inflation_median_monthly": null,
+    "inflation_mean_monthly": null,
+    "inflation_min": null,
+    "inflation_max": null,
+    "inflation_count": 0,
+    "defence_median": null,
+    "defence_mean": null,
+    "defence_count": 0,
+    "total_burned": 0,
+    "subnets_active": 67,
+    "subnets_total": 128,
+    "ema_lag_traps": 0,
+    "flow_divergences": 0
+  }
+]
