@@ -1,0 +1,47 @@
+[
+  {
+    "date": "2026-04-15",
+    "window_days": 7,
+    "composite_verdict": "LIKELY_EXTERNAL_PROXY",
+    "composite_confidence": 0.961,
+    "external_score": 0.961,
+    "synthetic_score": 0.0,
+    "signals_summary": {
+      "token_variance": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 1.0,
+        "cv": 4.3014
+      },
+      "chute_age": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.98,
+        "established_pct": 0.9844
+      },
+      "miner_entropy": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.91,
+        "entropy_ratio": 0.9073
+      },
+      "inter_arrival": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.85,
+        "cv": 8.9188
+      },
+      "function_sequence": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.35,
+        "monotonic_ratio": 0.4768
+      },
+      "parent_invocation": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.86,
+        "parent_to_inv_ratio": 0.8624
+      },
+      "instance_entropy": {
+        "verdict": "AMBIGUOUS",
+        "confidence": 0.4,
+        "dom_coverage": 0.6578
+      }
+    }
+  }
+]
