@@ -18,5 +18,25 @@
     "alpha_price": 0.084567469,
     "ema_price": 0.085451222024858,
     "market_cap_tao": 208581.16137516667
+  },
+  {
+    "date": "2026-04-17",
+    "miner_burn_rate": 0.013234,
+    "total_miner_incentive": 0.986766,
+    "alpha_outstanding": 2475257.993919867,
+    "alpha_in_pool": 2536058.780687044,
+    "alpha_out_emission": 1.0,
+    "alpha_in_emission": 0.0,
+    "gross_emission_annual": 1.0617,
+    "gross_emission_monthly": 0.0885,
+    "net_supply_delta_annual": 0.652,
+    "net_supply_delta_monthly": 0.0543,
+    "burned_tokens": 2618.01,
+    "supply_defence": 0.1818,
+    "supply_days_gap": 2,
+    "tao_reserves": 213900.462115882,
+    "alpha_price": 0.08436965,
+    "ema_price": 0.08458204590715468,
+    "market_cap_tao": 208836.65060672132
   }
 ]

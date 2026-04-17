@@ -43,5 +43,50 @@
         "dom_coverage": 0.6578
       }
     }
+  },
+  {
+    "date": "2026-04-17",
+    "window_days": 7,
+    "composite_verdict": "LIKELY_EXTERNAL_PROXY",
+    "composite_confidence": 1.0,
+    "external_score": 1.0,
+    "synthetic_score": 0.0,
+    "signals_summary": {
+      "token_variance": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 1.0,
+        "cv": 3.8619
+      },
+      "chute_age": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.98,
+        "established_pct": 0.9846
+      },
+      "miner_entropy": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.91,
+        "entropy_ratio": 0.9087
+      },
+      "inter_arrival": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.85,
+        "cv": 8.445
+      },
+      "function_sequence": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.35,
+        "monotonic_ratio": 0.4801
+      },
+      "parent_invocation": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.85,
+        "parent_to_inv_ratio": 0.8545
+      },
+      "instance_entropy": {
+        "verdict": "LEANS_EXTERNAL",
+        "confidence": 0.76,
+        "dom_coverage": 0.7556
+      }
+    }
   }
 ]

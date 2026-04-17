@@ -1,0 +1,267 @@
+{
+  "date": "2026-04-17",
+  "dominant_user_id": "dff3e6bb-3a6b-5a2b-9c48-da3abcd5ca5f",
+  "window_days": 7,
+  "signals": {
+    "token_variance": {
+      "signal": "TOKEN_COUNT_VARIANCE",
+      "fields_found": [
+        "it",
+        "ot",
+        "tokens"
+      ],
+      "distributions": {
+        "tokens": {
+          "n": 25111919,
+          "mean": 364.6,
+          "std": 1408.2,
+          "cv": 3.8619
+        },
+        "ot": {
+          "n": 25113304,
+          "mean": 377.6,
+          "std": 1426.1,
+          "cv": 3.7766
+        },
+        "it": {
+          "n": 25198104,
+          "mean": 10572.8,
+          "std": 18094.0,
+          "cv": 1.7114
+        }
+      },
+      "verdict": "LEANS_EXTERNAL",
+      "confidence": 1.0,
+      "note": "High token count variance (CV>0.5) across 3/3 fields. Diverse request sizes consistent with heterogeneous external demand."
+    },
+    "chute_age": {
+      "signal": "CHUTE_AGE_ANALYSIS",
+      "chutes_analyzed": 70,
+      "chutes_with_age": 65,
+      "age_distribution": {
+        "fresh_lt7d": 0,
+        "recent_7_30d": 1,
+        "established_gt30d": 64,
+        "avg_age_days": 202.4,
+        "min_age_days": 9,
+        "max_age_days": 472,
+        "median_age_days": 188
+      },
+      "verdict": "LEANS_EXTERNAL",
+      "confidence": 0.98,
+      "note": "98% of invoked chutes are 30+ days old. Consistent with organic discovery of established public models."
+    },
+    "miner_entropy": {
+      "signal": "MINER_SELECTION_ENTROPY",
+      "dominant_user_miners": 46,
+      "network_miners": 46,
+      "entropy_dominant": 2.7818,
+      "entropy_network": 3.0613,
+      "entropy_ratio": 0.9087,
+      "kl_divergence": 0.1253,
+      "top_miner_affinity": [
+        {
+          "hotkey_short": "5Cw4iiyj...",
+          "user_share": 0.3744,
+          "network_share": 0.3259,
+          "affinity_ratio": 1.15
+        },
+        {
+          "hotkey_short": "5CSa1rZA...",
+          "user_share": 0.1931,
+          "network_share": 0.1949,
+          "affinity_ratio": 0.99
+        },
+        {
+          "hotkey_short": "5GmdiSWw...",
+          "user_share": 0.1396,
+          "network_share": 0.1215,
+          "affinity_ratio": 1.15
+        },
+        {
+          "hotkey_short": "5ECA8dQk...",
+          "user_share": 0.0839,
+          "network_share": 0.073,
+          "affinity_ratio": 1.15
+        },
+        {
+          "hotkey_short": "5EHeZX7U...",
+          "user_share": 0.0612,
+          "network_share": 0.0532,
+          "affinity_ratio": 1.15
+        }
+      ],
+      "verdict": "LEANS_EXTERNAL",
+      "confidence": 0.91,
+      "note": "Entropy ratio 0.9087 \u2014 dominant user's miner selection closely matches load balancer distribution. Consistent with proxy routing."
+    },
+    "inter_arrival": {
+      "signal": "INTER_ARRIVAL_DISTRIBUTION",
+      "label": "dominant_user",
+      "n_events": 50000,
+      "n_intervals": 49999,
+      "stats": {
+        "mean_sec": 11.416,
+        "std_sec": 96.411,
+        "cv": 8.445,
+        "min_sec": 0.0,
+        "p10_sec": 0.576,
+        "p25_sec": 1.596,
+        "median_sec": 3.882,
+        "p75_sec": 7.959,
+        "p90_sec": 13.604,
+        "p99_sec": 32.313,
+        "max_sec": 2552.438
+      },
+      "pattern_classification": "BURSTY",
+      "regularity_score": 8.445,
+      "burst_ratio": 0.1868,
+      "verdict": "LEANS_EXTERNAL",
+      "confidence": 0.85,
+      "note": "CV=8.445, burst ratio=18.7%. Bursty pattern \u2014 agentic or event-driven external demand."
+    },
+    "function_sequence": {
+      "signal": "FUNCTION_SEQUENCE_COOCCURRENCE",
+      "n_calls": 31600000,
+      "unique_functions": 17,
+      "bigram_distribution": {
+        "chat \u2192 chat": {
+          "count": 8915484,
+          "share": 0.2821
+        },
+        "chat_stream \u2192 chat": {
+          "count": 6985469,
+          "share": 0.2211
+        },
+        "chat \u2192 chat_stream": {
+          "count": 6985078,
+          "share": 0.221
+        },
+        "chat_stream \u2192 chat_stream": {
+          "count": 6175802,
+          "share": 0.1954
+        },
+        "chat \u2192 completion_stream": {
+          "count": 473431,
+          "share": 0.015
+        },
+        "completion_stream \u2192 chat": {
+          "count": 473222,
+          "share": 0.015
+        },
+        "completion_stream \u2192 chat_stream": {
+          "count": 385376,
+          "share": 0.0122
+        },
+        "chat_stream \u2192 completion_stream": {
+          "count": 385258,
+          "share": 0.0122
+        },
+        "completion_stream \u2192 completion_stream": {
+          "count": 72669,
+          "share": 0.0023
+        },
+        "chat \u2192 predict": {
+          "count": 47274,
+          "share": 0.0015
+        },
+        "predict \u2192 chat": {
+          "count": 47161,
+          "share": 0.0015
+        },
+        "chat \u2192 speak": {
+          "count": 46398,
+          "share": 0.0015
+        },
+        "speak \u2192 chat": {
+          "count": 46205,
+          "share": 0.0015
+        },
+        "embed \u2192 chat": {
+          "count": 42811,
+          "share": 0.0014
+        },
+        "chat \u2192 embed": {
+          "count": 42776,
+          "share": 0.0014
+        },
+        "speak \u2192 chat_stream": {
+          "count": 38075,
+          "share": 0.0012
+        },
+        "predict \u2192 chat_stream": {
+          "count": 37870,
+          "share": 0.0012
+        },
+        "chat_stream \u2192 predict": {
+          "count": 37737,
+          "share": 0.0012
+        },
+        "chat_stream \u2192 speak": {
+          "count": 37729,
+          "share": 0.0012
+        },
+        "chat_stream \u2192 embed": {
+          "count": 34665,
+          "share": 0.0011
+        }
+      },
+      "trigram_top10": [],
+      "monotonic_ratio": 0.4801,
+      "pipeline_patterns": [
+        "RAG_PIPELINE",
+        "MULTI_MODAL"
+      ],
+      "sequence_entropy": 2.5352,
+      "verdict": "LEANS_EXTERNAL",
+      "confidence": 0.35,
+      "note": "High sequence diversity (entropy=2.54, 17 unique functions). Detected: RAG_PIPELINE, MULTI_MODAL."
+    },
+    "image_owner": {
+      "signal": "IMAGE_OWNER_PROVENANCE",
+      "unique_image_owners": 1,
+      "top1_owner_share": 1.0,
+      "verdict": "NOT_APPLICABLE",
+      "confidence": 0.0,
+      "note": "Image owner concentration is a structural constant on this subnet. E2EE routing means all traffic passes through Chutes inference infrastructure, which owns its own model images by design. Excluded from composite scoring.",
+      "excluded_from_composite": true
+    },
+    "parent_invocation": {
+      "signal": "PARENT_INVOCATION_DIVERSITY",
+      "dominant_inv_count": 27506725,
+      "distinct_parent_ids": 23505256,
+      "parent_to_inv_ratio": 0.8545,
+      "verdict": "LEANS_EXTERNAL",
+      "confidence": 0.85,
+      "note": "23,505,256 distinct parent IDs across 27,506,725 invocations (ratio=85.45%). High diversity \u2014 consistent with many independent external callers."
+    },
+    "instance_entropy": {
+      "signal": "INSTANCE_ID_ENTROPY",
+      "dominant_instance_ids": 1688,
+      "network_instance_ids": 2234,
+      "instance_to_inv_ratio": 6.1e-05,
+      "entropy_dominant": 0.7556,
+      "verdict": "LEANS_EXTERNAL",
+      "confidence": 0.76,
+      "note": "Dominant user accessed 1,688 instances (76% of network). Broad coverage \u2014 consistent with load balancer routing diverse demand.",
+      "composite_weight": 0.5
+    }
+  },
+  "composite": {
+    "composite_verdict": "LIKELY_EXTERNAL_PROXY",
+    "composite_confidence": 1.0,
+    "external_score": 1.0,
+    "synthetic_score": 0.0,
+    "reasoning": [
+      "  TOKEN_COUNT_VARIANCE: LEANS_EXTERNAL (conf=1.00, weight=1.0) \u2192 +1.00 external",
+      "  CHUTE_AGE_ANALYSIS: LEANS_EXTERNAL (conf=0.98, weight=1.0) \u2192 +0.98 external",
+      "  MINER_SELECTION_ENTROPY: LEANS_EXTERNAL (conf=0.91, weight=1.0) \u2192 +0.91 external",
+      "  INTER_ARRIVAL_DISTRIBUTION: LEANS_EXTERNAL (conf=0.85, weight=1.0) \u2192 +0.85 external",
+      "  FUNCTION_SEQUENCE_COOCCURRENCE: LEANS_EXTERNAL (conf=0.35, weight=1.0) \u2192 +0.35 external",
+      "  IMAGE_OWNER_PROVENANCE: NOT_APPLICABLE (excluded \u2014 structural constant)",
+      "  PARENT_INVOCATION_DIVERSITY: LEANS_EXTERNAL (conf=0.85, weight=1.0) \u2192 +0.85 external",
+      "  INSTANCE_ID_ENTROPY: LEANS_EXTERNAL (conf=0.76, weight=0.5) \u2192 +0.38 external"
+    ],
+    "interpretation": "Preponderance of evidence suggests the dominant user is a platform proxy routing genuine third-party API demand. Token variance, temporal distribution, function sequences, miner selection conformity, and request origin diversity are consistent with heterogeneous external usage."
+  }
+}

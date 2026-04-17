@@ -1,0 +1,208 @@
+{
+  "date": "2026-04-17",
+  "user_id": "dff3e6bb-3a6b-5a2b-9c48-da3abcd5ca5f",
+  "invocation_count": 27506725,
+  "compute_gpu_hours": 53012.82,
+  "inv_share": 0.870466,
+  "compute_share": 0.989103,
+  "chute_count": 70,
+  "chutes_with_metadata": 65,
+  "temporal_pattern": "STEADY",
+  "cv_hourly": 0.0808,
+  "active_hours_24": 24,
+  "peak_hour_utc": 14,
+  "trough_hour_utc": 18,
+  "workload_types": [
+    "EMBEDDING",
+    "TEXT_GENERATION",
+    "VISION",
+    "AUDIO"
+  ],
+  "distinct_parent_ids": 23505256,
+  "distinct_instance_ids": 1688,
+  "top_functions": [
+    {
+      "name": "chat",
+      "count": 14177452,
+      "share": 0.5154
+    },
+    {
+      "name": "chat_stream",
+      "count": 12157347,
+      "share": 0.442
+    },
+    {
+      "name": "completion_stream",
+      "count": 942405,
+      "share": 0.0343
+    },
+    {
+      "name": "speak",
+      "count": 87843,
+      "share": 0.0032
+    },
+    {
+      "name": "embed",
+      "count": 84968,
+      "share": 0.0031
+    },
+    {
+      "name": "completion",
+      "count": 40596,
+      "share": 0.0015
+    },
+    {
+      "name": "generate",
+      "count": 14329,
+      "share": 0.0005
+    },
+    {
+      "name": "e2e_invoke",
+      "count": 1396,
+      "share": 0.0001
+    },
+    {
+      "name": "classify_image",
+      "count": 225,
+      "share": 0.0
+    },
+    {
+      "name": "transcribe",
+      "count": 95,
+      "share": 0.0
+    },
+    {
+      "name": "get_models",
+      "count": 64,
+      "share": 0.0
+    },
+    {
+      "name": "classify_text",
+      "count": 3,
+      "share": 0.0
+    },
+    {
+      "name": "generate_lipsync",
+      "count": 2,
+      "share": 0.0
+    }
+  ],
+  "top_image_owners": [
+    {
+      "image_user_id": "dff3e6bb-3a6b-5a2b-9c48-da3abcd5ca5f",
+      "count": 27506725,
+      "share": 1.0
+    }
+  ],
+  "top_images": [
+    {
+      "image_id": "67223250-ef28-5876-858a-da3393847410",
+      "count": 14121817
+    },
+    {
+      "image_id": "d63d064c-4add-5213-b278-d3125c8078fd",
+      "count": 6472259
+    },
+    {
+      "image_id": "5bbb13bc-c050-518d-bb55-79994b540ec2",
+      "count": 3613745
+    },
+    {
+      "image_id": "ae476f71-ed8f-562e-b1af-49d49c948d6f",
+      "count": 2511720
+    },
+    {
+      "image_id": "d4708900-a2b1-5f8d-bd7b-a260a72606ba",
+      "count": 372703
+    },
+    {
+      "image_id": "20be83dc-d918-5b4d-8b70-7069634c1ead",
+      "count": 135136
+    },
+    {
+      "image_id": "56cc62f0-7ece-5d30-879b-6ca11383c56e",
+      "count": 120452
+    },
+    {
+      "image_id": "20423682-1b14-5779-9dbd-183d125aedf0",
+      "count": 86780
+    },
+    {
+      "image_id": "10b763a7-3f58-5f7b-ad25-30677667980c",
+      "count": 48168
+    },
+    {
+      "image_id": "5eb765a0-f45d-51db-bd8f-6d1e755e15c4",
+      "count": 7367
+    },
+    {
+      "image_id": "dfd2763b-35d2-50b5-8027-6ab0eeddc582",
+      "count": 5928
+    },
+    {
+      "image_id": "96565b84-cb70-5994-b0ca-4c56385a86ff",
+      "count": 3942
+    },
+    {
+      "image_id": "1cda7b70-39a9-5585-b9b6-46e02f98a3a4",
+      "count": 2324
+    },
+    {
+      "image_id": "cd37f651-da7f-5c61-ad4e-7a403ebfd3cd",
+      "count": 1185
+    },
+    {
+      "image_id": "b7401378-712c-508c-885d-4726147b7ff1",
+      "count": 1063
+    },
+    {
+      "image_id": "d8fc4591-9902-5bfe-8121-4edaa4c9c9ce",
+      "count": 838
+    },
+    {
+      "image_id": "46d2c24a-8c59-57e2-8dbd-23a3de67f0e4",
+      "count": 698
+    },
+    {
+      "image_id": "d70c833a-8399-5275-95e8-244a88e210da",
+      "count": 228
+    },
+    {
+      "image_id": "cc1c2804-1a3e-5187-a7a7-90209a2dcd2b",
+      "count": 163
+    },
+    {
+      "image_id": "fcecca7a-ed30-5ed0-a440-a3c6fc5491eb",
+      "count": 95
+    }
+  ],
+  "chute_owners": {},
+  "model_distribution": {},
+  "chute_type_distribution": {},
+  "hourly_distribution": {
+    "00:00": 1214179,
+    "01:00": 1209503,
+    "02:00": 1197164,
+    "03:00": 1186814,
+    "04:00": 1198681,
+    "05:00": 1198623,
+    "06:00": 1197685,
+    "07:00": 1215852,
+    "08:00": 1216715,
+    "09:00": 1225117,
+    "10:00": 1225208,
+    "11:00": 1218946,
+    "12:00": 1221615,
+    "13:00": 1226813,
+    "14:00": 1235553,
+    "15:00": 1044042,
+    "16:00": 1050584,
+    "17:00": 1059894,
+    "18:00": 883197,
+    "19:00": 1068081,
+    "20:00": 1057885,
+    "21:00": 1056572,
+    "22:00": 1054942,
+    "23:00": 1043060
+  }
+}
