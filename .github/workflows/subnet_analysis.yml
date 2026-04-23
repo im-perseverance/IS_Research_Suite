@@ -15,7 +15,10 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install bittensor
+        run: |
+          pip install bittensor
+          pip uninstall -y scalecodec
+          pip install cyscale
       - name: Run snapshot
         run: python subnet_analysis.py
       - name: Commit and push results
