@@ -5,34 +5,34 @@
   "displaced_subnet": "FlameWire",
   "owner_hotkey": "5G9ZvMXQEecYs8eA4xQ6Mrb9BHPQWs2g7u2RR6UXxrWQceZW",
   "generated_by": "Intelligence Sovereignty Research Suite | @perseverance",
-  "snapshots_count": 40,
+  "snapshots_count": 41,
   "first_snapshot": "2026-04-15",
-  "latest_snapshot": "2026-05-25",
+  "latest_snapshot": "2026-05-26",
   "summary": {
-    "days_tracked": 40,
+    "days_tracked": 41,
     "first_date": "2026-04-15",
-    "latest_date": "2026-05-25",
+    "latest_date": "2026-05-26",
     "first_day": 33,
-    "latest_day": 73,
+    "latest_day": 74,
     "price_first": 0.07187856,
-    "price_latest": 0.02858289,
+    "price_latest": 0.0285905,
     "price_min": 0.02689641,
     "price_max": 0.07187856,
-    "price_change_total_pct": -60.23,
+    "price_change_total_pct": -60.22,
     "tao_reserves_first": 2016.0477,
-    "tao_reserves_latest": 5727.0775,
+    "tao_reserves_latest": 5827.8064,
     "tao_reserves_min": 1944.0084,
-    "tao_reserves_max": 5727.0775,
-    "tao_reserves_net_change": 3711.0298,
+    "tao_reserves_max": 5827.8064,
+    "tao_reserves_net_change": 3811.7587,
     "total_stake_first": 863805.69,
-    "total_stake_latest": 1239423.69,
-    "total_stake_max": 1239423.69,
+    "total_stake_latest": 1243365.47,
+    "total_stake_max": 1243365.47,
     "n_active_first": 4,
-    "n_active_latest": 3,
+    "n_active_latest": 6,
     "n_active_max": 22,
     "combined_apy_min": -74.7097,
     "combined_apy_max": 99.4253,
-    "combined_apy_latest": 10.2558,
+    "combined_apy_latest": 11.1278,
     "structural_events": [
       {
         "date": "2026-04-16",
@@ -283,6 +283,11 @@
         "date": "2026-05-25",
         "day": 73,
         "event": "-3 UID(s) exited \u2014 miner churn"
+      },
+      {
+        "date": "2026-05-26",
+        "day": 74,
+        "event": "+3 new active UID(s) \u2014 miners entering"
       }
     ],
     "concentration_history": [
@@ -483,6 +488,11 @@
       },
       {
         "date": "2026-05-25",
+        "uid_concentration": "HIGH RISK",
+        "ck_concentration": "MODERATE"
+      },
+      {
+        "date": "2026-05-26",
         "uid_concentration": "HIGH RISK",
         "ck_concentration": "MODERATE"
       }
@@ -727,6 +737,12 @@
         "aligned": 2,
         "partial": 0,
         "misaligned": 0
+      },
+      {
+        "date": "2026-05-26",
+        "aligned": 2,
+        "partial": 0,
+        "misaligned": 0
       }
     ],
     "owner_stake_history": [
@@ -927,6 +943,11 @@
       },
       {
         "date": "2026-05-25",
+        "owner_uid": null,
+        "owner_stake_pct": 0.0
+      },
+      {
+        "date": "2026-05-26",
         "owner_uid": null,
         "owner_stake_pct": 0.0
       }
@@ -3178,6 +3199,62 @@
       "annotations": [
         "Yuma alignment improved: 1 \u2192 2 aligned validators",
         "-3 UID(s) exited \u2014 miner churn"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "day": 74,
+      "timestamp": "2026-05-26 14:39:44 UTC",
+      "block": 8269009,
+      "tao_reserves": 5827.8064,
+      "alpha_reserves": 203804.57,
+      "alpha_out": 460789.69,
+      "price": 0.0285905,
+      "moving_price": 0.02840645,
+      "momentum_pct": 0.6479,
+      "emission_per_block": 0.013858,
+      "emission_apy": 2.9267,
+      "price_apy": 8.201,
+      "combined_apy": 11.1278,
+      "genesis_momentum_clamped": false,
+      "n_uids": 256,
+      "n_active": 6,
+      "n_validators": 2,
+      "total_stake": 1243365.47,
+      "uid_top1_pct": 0.998579,
+      "uid_top3_pct": 0.99992,
+      "uid_top5_pct": 0.999999,
+      "uid_concentration": "HIGH RISK",
+      "ck_top1_pct": 0.459879,
+      "ck_top3_pct": 0.598267,
+      "ck_top5_pct": 0.63805,
+      "ck_concentration": "MODERATE",
+      "yuma_aligned": 2,
+      "yuma_partial": 0,
+      "yuma_misaligned": 0,
+      "owner_uid": null,
+      "owner_stake": 0.0,
+      "owner_stake_pct": 0.0,
+      "deltas": {
+        "tao_reserves": 100.728889,
+        "alpha_out": 6628.627515,
+        "price": 8e-06,
+        "momentum_pct": 0.074312,
+        "total_stake": 3941.777901,
+        "n_active": 3,
+        "uid_top1_pct": -0.000481,
+        "emission_apy": -0.10107,
+        "combined_apy": 0.871965,
+        "owner_stake_pct": null
+      },
+      "pct_changes": {
+        "tao_reserves": 1.7588,
+        "price": 0.0266,
+        "total_stake": 0.318,
+        "alpha_out": 1.4595
+      },
+      "annotations": [
+        "+3 new active UID(s) \u2014 miners entering"
       ]
     }
   ]
