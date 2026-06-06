@@ -5,34 +5,34 @@
   "displaced_subnet": "FlameWire",
   "owner_hotkey": "5G9ZvMXQEecYs8eA4xQ6Mrb9BHPQWs2g7u2RR6UXxrWQceZW",
   "generated_by": "Intelligence Sovereignty Research Suite | @perseverance",
-  "snapshots_count": 51,
+  "snapshots_count": 52,
   "first_snapshot": "2026-04-15",
-  "latest_snapshot": "2026-06-05",
+  "latest_snapshot": "2026-06-06",
   "summary": {
-    "days_tracked": 51,
+    "days_tracked": 52,
     "first_date": "2026-04-15",
-    "latest_date": "2026-06-05",
+    "latest_date": "2026-06-06",
     "first_day": 33,
-    "latest_day": 84,
+    "latest_day": 85,
     "price_first": 0.07187856,
-    "price_latest": 0.02440665,
+    "price_latest": 0.02584215,
     "price_min": 0.02440665,
     "price_max": 0.07187856,
-    "price_change_total_pct": -66.04,
+    "price_change_total_pct": -64.05,
     "tao_reserves_first": 2016.0477,
-    "tao_reserves_latest": 6289.7181,
+    "tao_reserves_latest": 6477.8722,
     "tao_reserves_min": 1944.0084,
     "tao_reserves_max": 6701.2638,
-    "tao_reserves_net_change": 4273.6704,
+    "tao_reserves_net_change": 4461.8245,
     "total_stake_first": 863805.69,
-    "total_stake_latest": 1279730.84,
+    "total_stake_latest": 1236653.36,
     "total_stake_max": 1285848.45,
     "n_active_first": 4,
     "n_active_latest": 8,
     "n_active_max": 22,
     "combined_apy_min": -74.7097,
     "combined_apy_max": 99.4253,
-    "combined_apy_latest": -65.6185,
+    "combined_apy_latest": 46.7769,
     "structural_events": [
       {
         "date": "2026-04-16",
@@ -600,6 +600,11 @@
         "date": "2026-06-05",
         "uid_concentration": "HIGH RISK",
         "ck_concentration": "MODERATE"
+      },
+      {
+        "date": "2026-06-06",
+        "uid_concentration": "HIGH RISK",
+        "ck_concentration": "HIGH RISK"
       }
     ],
     "yuma_history": [
@@ -908,6 +913,12 @@
         "aligned": 1,
         "partial": 0,
         "misaligned": 3
+      },
+      {
+        "date": "2026-06-06",
+        "aligned": 1,
+        "partial": 0,
+        "misaligned": 2
       }
     ],
     "owner_stake_history": [
@@ -1163,6 +1174,11 @@
       },
       {
         "date": "2026-06-05",
+        "owner_uid": null,
+        "owner_stake_pct": 0.0
+      },
+      {
+        "date": "2026-06-06",
         "owner_uid": null,
         "owner_stake_pct": 0.0
       }
@@ -4031,6 +4047,60 @@
         "Yuma alignment degraded: 2 \u2192 3 misaligned",
         "+1 new active UID(s) \u2014 miners entering"
       ]
+    },
+    {
+      "date": "2026-06-06",
+      "day": 85,
+      "timestamp": "2026-06-06 13:06:19 UTC",
+      "block": 8347733,
+      "tao_reserves": 6477.8722,
+      "alpha_reserves": 250635.14,
+      "alpha_out": 512370.77,
+      "price": 0.02584215,
+      "moving_price": 0.02508935,
+      "momentum_pct": 3.0005,
+      "emission_per_block": 0.012921,
+      "emission_apy": 2.7436,
+      "price_apy": 44.0333,
+      "combined_apy": 46.7769,
+      "genesis_momentum_clamped": false,
+      "n_uids": 256,
+      "n_active": 8,
+      "n_validators": 3,
+      "total_stake": 1236653.36,
+      "uid_top1_pct": 0.995075,
+      "uid_top3_pct": 0.998665,
+      "uid_top5_pct": 0.999637,
+      "uid_concentration": "HIGH RISK",
+      "ck_top1_pct": 0.968649,
+      "ck_top3_pct": 0.981202,
+      "ck_top5_pct": 0.990944,
+      "ck_concentration": "HIGH RISK",
+      "yuma_aligned": 1,
+      "yuma_partial": 0,
+      "yuma_misaligned": 2,
+      "owner_uid": null,
+      "owner_stake": 0.0,
+      "owner_stake_pct": 0.0,
+      "deltas": {
+        "tao_reserves": 188.154057,
+        "alpha_out": 13585.758374,
+        "price": 0.001436,
+        "momentum_pct": 11.762866,
+        "total_stake": -43077.481459,
+        "n_active": 0,
+        "uid_top1_pct": 5e-06,
+        "emission_apy": null,
+        "combined_apy": 112.395423,
+        "owner_stake_pct": null
+      },
+      "pct_changes": {
+        "tao_reserves": 2.9915,
+        "price": 5.8816,
+        "total_stake": -3.3661,
+        "alpha_out": 2.7238
+      },
+      "annotations": []
     }
   ]
 }
