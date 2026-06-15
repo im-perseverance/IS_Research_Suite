@@ -1119,5 +1119,24 @@
     "subnets_total": 128,
     "ema_lag_traps": 0,
     "flow_divergences": 0
+  },
+  {
+    "date": "2026-06-15",
+    "block": 8413607,
+    "inflation_median_annual": 1.0710956610764506,
+    "inflation_mean_annual": 2.480149482816495,
+    "inflation_median_monthly": 0.08925797175637089,
+    "inflation_mean_monthly": 0.20667912356804127,
+    "inflation_min": -10.367585225329568,
+    "inflation_max": 68.08006256745936,
+    "inflation_count": 121,
+    "defence_median": 0.0,
+    "defence_mean": 0.0020293554012192016,
+    "defence_count": 121,
+    "total_burned": 7993.410697583575,
+    "subnets_active": 24,
+    "subnets_total": 128,
+    "ema_lag_traps": 0,
+    "flow_divergences": 1
   }
 ]
