@@ -70,5 +70,17 @@
     "top_yield": 3.641140847794216e-05,
     "top_div": 0.10218966752290726,
     "top_take": 0.0899977111467155
+  },
+  {
+    "date": "2026-07-01",
+    "block": 8526759,
+    "active_validators": 8,
+    "ghost_validators": 32,
+    "top_validator_uid": 55,
+    "top_validator_hotkey": "5E4z3h9yVhmQyCFWNbY9BPpwhx4xFiPwq3eeqmBgVF6KULde",
+    "top_validator_name": "",
+    "top_yield": 0.0005375731183644768,
+    "top_div": 0.10218966752290726,
+    "top_take": 0.0899977111467155
   }
 ]
