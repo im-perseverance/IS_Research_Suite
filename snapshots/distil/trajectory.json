@@ -5,34 +5,34 @@
   "displaced_subnet": "FlameWire",
   "owner_hotkey": "5G9ZvMXQEecYs8eA4xQ6Mrb9BHPQWs2g7u2RR6UXxrWQceZW",
   "generated_by": "Intelligence Sovereignty Research Suite | @perseverance",
-  "snapshots_count": 86,
+  "snapshots_count": 87,
   "first_snapshot": "2026-04-15",
-  "latest_snapshot": "2026-07-10",
+  "latest_snapshot": "2026-07-11",
   "summary": {
-    "days_tracked": 86,
+    "days_tracked": 87,
     "first_date": "2026-04-15",
-    "latest_date": "2026-07-10",
+    "latest_date": "2026-07-11",
     "first_day": 33,
-    "latest_day": 119,
+    "latest_day": 120,
     "price_first": 0.07187856,
-    "price_latest": 0.02712816,
+    "price_latest": 0.0310606,
     "price_min": 0.02086684,
     "price_max": 0.07187856,
-    "price_change_total_pct": -62.26,
+    "price_change_total_pct": -56.79,
     "tao_reserves_first": 2016.0477,
-    "tao_reserves_latest": 8791.8673,
+    "tao_reserves_latest": 9507.0944,
     "tao_reserves_min": 1944.0084,
-    "tao_reserves_max": 8996.3147,
-    "tao_reserves_net_change": 6775.8196,
+    "tao_reserves_max": 9507.0944,
+    "tao_reserves_net_change": 7491.0467,
     "total_stake_first": 863805.69,
-    "total_stake_latest": 1348716.28,
+    "total_stake_latest": 1369420.52,
     "total_stake_max": 1375251.71,
     "n_active_first": 4,
     "n_active_latest": 7,
     "n_active_max": 28,
     "combined_apy_min": -74.7097,
     "combined_apy_max": 861.7074,
-    "combined_apy_latest": -22.8484,
+    "combined_apy_latest": 73.4617,
     "structural_events": [
       {
         "date": "2026-04-16",
@@ -955,6 +955,11 @@
         "date": "2026-07-10",
         "uid_concentration": "HIGH RISK",
         "ck_concentration": "HIGH RISK"
+      },
+      {
+        "date": "2026-07-11",
+        "uid_concentration": "HIGH RISK",
+        "ck_concentration": "HIGH RISK"
       }
     ],
     "yuma_history": [
@@ -1473,6 +1478,12 @@
         "aligned": 2,
         "partial": 0,
         "misaligned": 0
+      },
+      {
+        "date": "2026-07-11",
+        "aligned": 2,
+        "partial": 0,
+        "misaligned": 0
       }
     ],
     "owner_stake_history": [
@@ -1903,6 +1914,11 @@
       },
       {
         "date": "2026-07-10",
+        "owner_uid": null,
+        "owner_stake_pct": 0.0
+      },
+      {
+        "date": "2026-07-11",
         "owner_uid": null,
         "owner_stake_pct": 0.0
       }
@@ -6725,6 +6741,60 @@
       "annotations": [
         "-1 UID(s) exited \u2014 miner churn"
       ]
+    },
+    {
+      "date": "2026-07-11",
+      "day": 120,
+      "timestamp": "2026-07-11 12:52:50 UTC",
+      "block": 8598216,
+      "tao_reserves": 9507.0944,
+      "alpha_reserves": 306082.14,
+      "alpha_out": 768116.18,
+      "price": 0.0310606,
+      "moving_price": 0.0297529,
+      "momentum_pct": 4.3952,
+      "emission_per_block": 0.014738,
+      "emission_apy": 2.8262,
+      "price_apy": 70.6354,
+      "combined_apy": 73.4617,
+      "genesis_momentum_clamped": false,
+      "n_uids": 256,
+      "n_active": 7,
+      "n_validators": 2,
+      "total_stake": 1369420.52,
+      "uid_top1_pct": 0.984953,
+      "uid_top3_pct": 0.999409,
+      "uid_top5_pct": 0.999948,
+      "uid_concentration": "HIGH RISK",
+      "ck_top1_pct": 0.610767,
+      "ck_top3_pct": 0.718064,
+      "ck_top5_pct": 0.753183,
+      "ck_concentration": "HIGH RISK",
+      "yuma_aligned": 2,
+      "yuma_partial": 0,
+      "yuma_misaligned": 0,
+      "owner_uid": null,
+      "owner_stake": 0.0,
+      "owner_stake_pct": 0.0,
+      "deltas": {
+        "tao_reserves": 715.227095,
+        "alpha_out": 27701.372733,
+        "price": 0.003932,
+        "momentum_pct": 6.799009,
+        "total_stake": 20704.237937,
+        "n_active": 0,
+        "uid_top1_pct": 0.000245,
+        "emission_apy": 0.308531,
+        "combined_apy": 96.310065,
+        "owner_stake_pct": null
+      },
+      "pct_changes": {
+        "tao_reserves": 8.1351,
+        "price": 14.4958,
+        "total_stake": 1.5351,
+        "alpha_out": 3.7413
+      },
+      "annotations": []
     }
   ]
 }
