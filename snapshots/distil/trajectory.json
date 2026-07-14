@@ -5,34 +5,34 @@
   "displaced_subnet": "FlameWire",
   "owner_hotkey": "5G9ZvMXQEecYs8eA4xQ6Mrb9BHPQWs2g7u2RR6UXxrWQceZW",
   "generated_by": "Intelligence Sovereignty Research Suite | @perseverance",
-  "snapshots_count": 89,
+  "snapshots_count": 90,
   "first_snapshot": "2026-04-15",
-  "latest_snapshot": "2026-07-13",
+  "latest_snapshot": "2026-07-14",
   "summary": {
-    "days_tracked": 89,
+    "days_tracked": 90,
     "first_date": "2026-04-15",
-    "latest_date": "2026-07-13",
+    "latest_date": "2026-07-14",
     "first_day": 33,
-    "latest_day": 122,
+    "latest_day": 123,
     "price_first": 0.07187856,
-    "price_latest": 0.03144463,
+    "price_latest": 0.03107517,
     "price_min": 0.02086684,
     "price_max": 0.07187856,
-    "price_change_total_pct": -56.25,
+    "price_change_total_pct": -56.77,
     "tao_reserves_first": 2016.0477,
-    "tao_reserves_latest": 9787.5821,
+    "tao_reserves_latest": 9829.7448,
     "tao_reserves_min": 1944.0084,
     "tao_reserves_max": 9969.2964,
-    "tao_reserves_net_change": 7771.5344,
+    "tao_reserves_net_change": 7813.6971,
     "total_stake_first": 863805.69,
-    "total_stake_latest": 1370012.58,
+    "total_stake_latest": 1357205.68,
     "total_stake_max": 1377635.28,
     "n_active_first": 4,
     "n_active_latest": 7,
     "n_active_max": 28,
     "combined_apy_min": -74.7097,
     "combined_apy_max": 861.7074,
-    "combined_apy_latest": -19.4962,
+    "combined_apy_latest": 6.6602,
     "structural_events": [
       {
         "date": "2026-04-16",
@@ -975,6 +975,11 @@
         "date": "2026-07-13",
         "uid_concentration": "HIGH RISK",
         "ck_concentration": "HIGH RISK"
+      },
+      {
+        "date": "2026-07-14",
+        "uid_concentration": "HIGH RISK",
+        "ck_concentration": "HIGH RISK"
       }
     ],
     "yuma_history": [
@@ -1511,6 +1516,12 @@
         "aligned": 2,
         "partial": 0,
         "misaligned": 1
+      },
+      {
+        "date": "2026-07-14",
+        "aligned": 2,
+        "partial": 0,
+        "misaligned": 1
       }
     ],
     "owner_stake_history": [
@@ -1956,6 +1967,11 @@
       },
       {
         "date": "2026-07-13",
+        "owner_uid": null,
+        "owner_stake_pct": 0.0
+      },
+      {
+        "date": "2026-07-14",
         "owner_uid": null,
         "owner_stake_pct": 0.0
       }
@@ -6942,6 +6958,60 @@
       "annotations": [
         "Yuma alignment degraded: 0 \u2192 1 misaligned"
       ]
+    },
+    {
+      "date": "2026-07-14",
+      "day": 123,
+      "timestamp": "2026-07-14 13:04:46 UTC",
+      "block": 8619863,
+      "tao_reserves": 9829.7448,
+      "alpha_reserves": 316321.54,
+      "alpha_out": 787943.47,
+      "price": 0.03107517,
+      "moving_price": 0.03097871,
+      "momentum_pct": 0.3114,
+      "emission_per_block": 0.014469,
+      "emission_apy": 2.7995,
+      "price_apy": 3.8606,
+      "combined_apy": 6.6602,
+      "genesis_momentum_clamped": false,
+      "n_uids": 256,
+      "n_active": 7,
+      "n_validators": 3,
+      "total_stake": 1357205.68,
+      "uid_top1_pct": 0.983518,
+      "uid_top3_pct": 0.998804,
+      "uid_top5_pct": 0.999869,
+      "uid_concentration": "HIGH RISK",
+      "ck_top1_pct": 0.615935,
+      "ck_top3_pct": 0.721851,
+      "ck_top5_pct": 0.755787,
+      "ck_concentration": "HIGH RISK",
+      "yuma_aligned": 2,
+      "yuma_partial": 0,
+      "yuma_misaligned": 1,
+      "owner_uid": null,
+      "owner_stake": 0.0,
+      "owner_stake_pct": 0.0,
+      "deltas": {
+        "tao_reserves": 42.162705,
+        "alpha_out": 4436.816538,
+        "price": -0.000369,
+        "momentum_pct": 2.387257,
+        "total_stake": -12806.898527,
+        "n_active": 0,
+        "uid_top1_pct": -0.001106,
+        "emission_apy": -0.030975,
+        "combined_apy": 26.156369,
+        "owner_stake_pct": null
+      },
+      "pct_changes": {
+        "tao_reserves": 0.4308,
+        "price": -1.175,
+        "total_stake": -0.9348,
+        "alpha_out": 0.5663
+      },
+      "annotations": []
     }
   ]
 }
