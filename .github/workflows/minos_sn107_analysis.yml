@@ -20,7 +20,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install bittensor
+        run: pip install "bittensor<11"
 
       - name: Run Minos SN107 analysis
         run: python minos_sn107_analysis.py
