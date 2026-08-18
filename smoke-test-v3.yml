@@ -1,0 +1,62 @@
+# .github/workflows/smoke-test-v3.yml
+#
+# IS Research Suite — v3 merge gate.
+# Manually triggered. Installs live bittensor v11 on a clean runner and runs
+# the chain_analysis.py smoke test against mainnet. This is the check that
+# must pass before v3 tools merge / before trusting a new v11 point release.
+#
+# What to eyeball in the output:
+#   - pinned block is current
+#   - subnet count is plausible (~130)
+#   - tao_weight ≈ 0.18, owner_cut ≈ 0.18   <- u64/u16 decoders correct
+#   - sample subnet spot/ema prices are sane <- fixed-point decoder correct
+#   - burn counters present on ~all subnets  <- AlphaAssets pallet reachable
+
+name: v3 smoke test (live chain)
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: "Bittensor network"
+        required: false
+        default: "finney"
+
+concurrency:
+  group: smoke-test-v3
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-v3-${{ runner.os }}-${{ hashFiles('requirements-v3.txt') }}
+          restore-keys: pip-v3-${{ runner.os }}-
+
+      - name: Install v3 dependencies
+        run: |
+          if [ -f requirements-v3.txt ]; then
+            pip install -r requirements-v3.txt
+          else
+            pip install "bittensor>=11,<12"
+          fi
+          python -c "import bittensor; print('bittensor', bittensor.__version__)"
+
+      - name: Offline structural tests (no chain needed)
+        run: python test_chain_analysis.py
+
+      - name: Live smoke test
+        env:
+          IS_BT_NETWORK: ${{ inputs.network }}
+        run: python chain_analysis.py
