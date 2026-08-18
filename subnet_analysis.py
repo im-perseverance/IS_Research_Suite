@@ -508,6 +508,19 @@ async def collect(snap, block, client):
             print(f"  Sample metagraph type: dict, keys: {list(sample.keys())[:20]}")
         else:
             print(f"  Sample metagraph type: {type(sample).__name__}, attrs: {[a for a in dir(sample) if not a.startswith('_')][:20]}")
+        # Inspect neuron structure for validator adapter
+        neurons = getattr(sample, 'neurons', None)
+        if neurons and len(neurons) > 0:
+            n0 = neurons[0]
+            n0_attrs = [a for a in dir(n0) if not a.startswith('_')]
+            print(f"  Neuron[0] type: {type(n0).__name__}, attrs: {n0_attrs}")
+            # Print actual values for key fields to check units
+            for field in ['stake', 'total_stake', 'alpha_stake', 'emission', 'dividends',
+                          'dividend', 'incentive', 'trust', 'validator_trust',
+                          'validator_permit', 'hotkey', 'coldkey']:
+                val = getattr(n0, field, 'MISSING')
+                if val != 'MISSING':
+                    print(f"    n0.{field} = {val} (type: {type(val).__name__})")
     # Fill None for missing subnets so analyse() doesn't KeyError
     for n in netuids:
         if n not in metagraphs:
