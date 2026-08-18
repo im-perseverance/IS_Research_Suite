@@ -340,7 +340,11 @@ def compute_7d_price_apy(netuid, current_price, trajectory_90d, date_str):
 
 def mg_list(graph, *names, default=None):
     for n in names:
-        v = graph.get(n)
+        # v11 metagraph may be a dict OR a structured object — try both.
+        if isinstance(graph, dict):
+            v = graph.get(n)
+        else:
+            v = getattr(graph, n, None)
         if v is not None:
             return v
     return default if default is not None else []
@@ -382,7 +386,7 @@ def get_best_validator(graph, take_map):
             uid_emission = safe_float(emissions[uid]) if uid < len(emissions) else 0.0
             raw_apy = (uid_emission / stake) * BLOCKS_PER_YEAR if stake > 0 else 0
             hotkey = hotkeys[uid]
-            take_val = take_map.get(hotkey)
+            take_val = take_map.get(str(hotkey))
             take = max(0.0, min(1.0, safe_float(take_val))) if take_val is not None else None
             est_apy = raw_apy * (1.0 - take) if take is not None else raw_apy
             if est_apy > best_apy:
