@@ -340,11 +340,7 @@ def compute_7d_price_apy(netuid, current_price, trajectory_90d, date_str):
 
 def mg_list(graph, *names, default=None):
     for n in names:
-        # v11 metagraph may be a dict OR a structured object — try both.
-        if isinstance(graph, dict):
-            v = graph.get(n)
-        else:
-            v = getattr(graph, n, None)
+        v = graph.get(n)
         if v is not None:
             return v
     return default if default is not None else []
@@ -386,7 +382,7 @@ def get_best_validator(graph, take_map):
             uid_emission = safe_float(emissions[uid]) if uid < len(emissions) else 0.0
             raw_apy = (uid_emission / stake) * BLOCKS_PER_YEAR if stake > 0 else 0
             hotkey = hotkeys[uid]
-            take_val = take_map.get(str(hotkey))
+            take_val = take_map.get(hotkey)
             take = max(0.0, min(1.0, safe_float(take_val))) if take_val is not None else None
             est_apy = raw_apy * (1.0 - take) if take is not None else raw_apy
             if est_apy > best_apy:
@@ -480,15 +476,32 @@ async def collect(snap, block, client):
           f"concurrency {CONVICTION_CONCURRENCY})...")
     conv_results = await _gather_limited(
         [chain.subnet_convictions(snap, n) for n in netuids], CONVICTION_CONCURRENCY)
-    convictions = {n: (c if not isinstance(c, (BaseException, type(None))) else None)
+    convictions = {n: (c if isinstance(c, dict) else None)
                    for n, c in zip(netuids, conv_results)}
 
     print(f"  Fetching metagraphs ({len(netuids)} subnets, "
           f"concurrency {METAGRAPH_CONCURRENCY})...")
     mg_results = await _gather_limited(
         [chain.metagraph(snap, n) for n in netuids], METAGRAPH_CONCURRENCY)
-    metagraphs = {n: (m if not isinstance(m, (BaseException, type(None))) else None)
+    metagraphs = {n: (m if isinstance(m, dict) else None)
                   for n, m in zip(netuids, mg_results)}
+
+    # ── Diagnostics: what did v11 actually hand us? ──
+    non_none = sum(1 for m in metagraphs.values() if m is not None)
+    print(f"  Metagraphs loaded: {non_none}/{len(netuids)}")
+    sample = next((m for m in metagraphs.values() if m is not None), None)
+    if sample:
+        if isinstance(sample, dict):
+            print(f"  Sample metagraph type: dict, keys: {list(sample.keys())[:15]}")
+        else:
+            print(f"  Sample metagraph type: {type(sample).__name__}, attrs: {[a for a in dir(sample) if not a.startswith('_')][:15]}")
+    # Also test get_best_validator on the sample to see if it silently fails
+    if sample:
+        try:
+            test_bv = get_best_validator(sample, take_map)
+            print(f"  Sample best_validator result: {test_bv}")
+        except Exception as e:
+            print(f"  Sample best_validator EXCEPTION: {type(e).__name__}: {e}")
 
     return {
         "block": block,
