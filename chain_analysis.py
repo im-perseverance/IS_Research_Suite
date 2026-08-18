@@ -194,7 +194,7 @@ async def open_snapshot(client, block: Optional[int] = None):
     if block is None:
         blk = client.block
         block = int(await blk) if asyncio.iscoroutine(blk) else int(blk)
-    snap = await client.at(block)
+    snap = client.at(block)
     return snap, block
 
 
