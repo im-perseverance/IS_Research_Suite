@@ -481,27 +481,34 @@ async def collect(snap, block, client):
 
     print(f"  Fetching metagraphs ({len(netuids)} subnets, "
           f"concurrency {METAGRAPH_CONCURRENCY})...")
-    mg_results = await _gather_limited(
-        [chain.metagraph(snap, n) for n in netuids], METAGRAPH_CONCURRENCY)
-    metagraphs = {n: (m if isinstance(m, dict) else None)
-                  for n, m in zip(netuids, mg_results)}
+    metagraphs = {}
+    mg_errors = {}
+    for n in netuids:
+        try:
+            m = await chain.metagraph(snap, n)
+            if m is not None:
+                metagraphs[n] = m
+            else:
+                mg_errors[n] = "returned None"
+        except Exception as e:
+            mg_errors[n] = f"{type(e).__name__}: {e}"
 
-    # ── Diagnostics: what did v11 actually hand us? ──
-    non_none = sum(1 for m in metagraphs.values() if m is not None)
+    non_none = len(metagraphs)
     print(f"  Metagraphs loaded: {non_none}/{len(netuids)}")
-    sample = next((m for m in metagraphs.values() if m is not None), None)
+    if mg_errors:
+        sample_errors = list(mg_errors.items())[:5]
+        for sn, err in sample_errors:
+            print(f"    SN{sn} metagraph error: {err}")
+    sample = next(iter(metagraphs.values()), None)
     if sample:
         if isinstance(sample, dict):
-            print(f"  Sample metagraph type: dict, keys: {list(sample.keys())[:15]}")
+            print(f"  Sample metagraph type: dict, keys: {list(sample.keys())[:20]}")
         else:
-            print(f"  Sample metagraph type: {type(sample).__name__}, attrs: {[a for a in dir(sample) if not a.startswith('_')][:15]}")
-    # Also test get_best_validator on the sample to see if it silently fails
-    if sample:
-        try:
-            test_bv = get_best_validator(sample, take_map)
-            print(f"  Sample best_validator result: {test_bv}")
-        except Exception as e:
-            print(f"  Sample best_validator EXCEPTION: {type(e).__name__}: {e}")
+            print(f"  Sample metagraph type: {type(sample).__name__}, attrs: {[a for a in dir(sample) if not a.startswith('_')][:20]}")
+    # Fill None for missing subnets so analyse() doesn't KeyError
+    for n in netuids:
+        if n not in metagraphs:
+            metagraphs[n] = None
 
     return {
         "block": block,
