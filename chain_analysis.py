@@ -97,14 +97,22 @@ def f(val: Any, default: Optional[float] = 0.0) -> Optional[float]:
         return default
     if isinstance(val, (int, float)):
         return float(val)
-    # v11 Balance: prefer explicit token-unit accessor, fall back to rao.
-    for attr in ("tao", "value"):
-        v = getattr(val, attr, None)
-        if isinstance(v, (int, float)):
-            return float(v)
-    rao = getattr(val, "rao", None)
-    if isinstance(rao, (int, float)):
-        return float(rao) / RAO_PER_TAO
+    # v11 Balance: unit-typed — .tao raises UnitMismatchError on alpha
+    # balances and vice versa. getattr default only catches AttributeError,
+    # so we must try/except each accessor explicitly.
+    for attr in ("tao", "alpha", "value"):
+        try:
+            v = getattr(val, attr)
+            if isinstance(v, (int, float)):
+                return float(v)
+        except Exception:
+            continue
+    try:
+        rao = getattr(val, "rao")
+        if isinstance(rao, (int, float)):
+            return float(rao) / RAO_PER_TAO
+    except Exception:
+        pass
     try:
         return float(val)
     except Exception:
