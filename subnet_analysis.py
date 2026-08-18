@@ -480,14 +480,14 @@ async def collect(snap, block, client):
           f"concurrency {CONVICTION_CONCURRENCY})...")
     conv_results = await _gather_limited(
         [chain.subnet_convictions(snap, n) for n in netuids], CONVICTION_CONCURRENCY)
-    convictions = {n: (c if isinstance(c, dict) else None)
+    convictions = {n: (c if not isinstance(c, (BaseException, type(None))) else None)
                    for n, c in zip(netuids, conv_results)}
 
     print(f"  Fetching metagraphs ({len(netuids)} subnets, "
           f"concurrency {METAGRAPH_CONCURRENCY})...")
     mg_results = await _gather_limited(
         [chain.metagraph(snap, n) for n in netuids], METAGRAPH_CONCURRENCY)
-    metagraphs = {n: (m if isinstance(m, dict) else None)
+    metagraphs = {n: (m if not isinstance(m, (BaseException, type(None))) else None)
                   for n, m in zip(netuids, mg_results)}
 
     return {
