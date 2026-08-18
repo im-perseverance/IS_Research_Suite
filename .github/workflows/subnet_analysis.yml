@@ -16,7 +16,7 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: |
-          pip install bittensor
+          pip install "bittensor<11"
           pip uninstall -y scalecodec
           pip install cyscale
       - name: Run snapshot
