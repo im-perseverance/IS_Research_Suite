@@ -20,7 +20,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install bittensor
+        run: pip install "bittensor<11"
 
       - name: Run Chutes SN64 analysis
         run: python chutes_sn64_analysis.py
