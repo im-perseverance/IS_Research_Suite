@@ -226,6 +226,17 @@ def run(collector: Callable[..., Awaitable[Any]],
     return asyncio.run(_main())
 
 
+# ── Async / sync bridge ────────────────────────────────────────────────────
+
+async def _resolve(val):
+    """Await if coroutine/future, return as-is otherwise.
+    v11 SyncSnapshot methods may return plain values or coroutines depending
+    on the runtime path — this lets q/qmap/read work with either."""
+    if asyncio.iscoroutine(val) or asyncio.isfuture(val):
+        return await val
+    return val
+
+
 # ── Generic storage access (with graceful degradation) ─────────────────────
 
 def _storage_item(pallet: str, item: str):
@@ -236,7 +247,7 @@ def _storage_item(pallet: str, item: str):
 async def q(snap, pallet: str, item: str, params: Iterable[Any] = ()) -> Any:
     """Single storage query. Returns decoded value or None on failure."""
     try:
-        return snap.query(_storage_item(pallet, item), list(params))
+        return await _resolve(snap.query(_storage_item(pallet, item), list(params)))
     except Exception as e:
         log.warning("query %s.%s%r failed: %s", pallet, item, tuple(params), e)
         return None
@@ -245,7 +256,7 @@ async def q(snap, pallet: str, item: str, params: Iterable[Any] = ()) -> Any:
 async def qmap(snap, pallet: str, item: str, params: Iterable[Any] = ()) -> dict:
     """Storage map query -> {int_key: value}. Empty dict on failure."""
     try:
-        rows = snap.query_map(_storage_item(pallet, item), list(params))
+        rows = await _resolve(snap.query_map(_storage_item(pallet, item), list(params)))
         out = {}
         for k, v in rows:
             key = k[0] if isinstance(k, (tuple, list)) and len(k) == 1 else k
@@ -263,7 +274,7 @@ async def qmap(snap, pallet: str, item: str, params: Iterable[Any] = ()) -> dict
 async def read(snap, name: str, default: Any = None, **kwargs) -> Any:
     """Named read from the v11 catalog, by name. Default on failure."""
     try:
-        return snap.read(name, **kwargs)
+        return await _resolve(snap.read(name, **kwargs))
     except Exception as e:
         log.warning("read %s(%r) failed: %s", name, kwargs, e)
         return default
@@ -469,7 +480,7 @@ async def hotkey_identities(snap, hotkeys: list[str]) -> dict:
 async def metagraph(snap, netuid: int):
     """Typed v11 metagraph (per-neuron records; no arrays)."""
     try:
-        return snap.subnets.metagraph(netuid)
+        return await _resolve(snap.subnets.metagraph(netuid))
     except Exception:
         return await read(snap, "metagraph", netuid=netuid)
 
