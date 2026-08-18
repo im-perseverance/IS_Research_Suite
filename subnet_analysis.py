@@ -498,29 +498,6 @@ async def collect(snap, block, client):
 
     non_none = len(metagraphs)
     print(f"  Metagraphs loaded: {non_none}/{len(netuids)}")
-    if mg_errors:
-        sample_errors = list(mg_errors.items())[:5]
-        for sn, err in sample_errors:
-            print(f"    SN{sn} metagraph error: {err}")
-    sample = next(iter(metagraphs.values()), None)
-    if sample:
-        if isinstance(sample, dict):
-            print(f"  Sample metagraph type: dict, keys: {list(sample.keys())[:20]}")
-        else:
-            print(f"  Sample metagraph type: {type(sample).__name__}, attrs: {[a for a in dir(sample) if not a.startswith('_')][:20]}")
-        # Inspect neuron structure for validator adapter
-        neurons = getattr(sample, 'neurons', None)
-        if neurons and len(neurons) > 0:
-            n0 = neurons[0]
-            n0_attrs = [a for a in dir(n0) if not a.startswith('_')]
-            print(f"  Neuron[0] type: {type(n0).__name__}, attrs: {n0_attrs}")
-            # Print actual values for key fields to check units
-            for field in ['stake', 'total_stake', 'alpha_stake', 'emission', 'dividends',
-                          'dividend', 'incentive', 'trust', 'validator_trust',
-                          'validator_permit', 'hotkey', 'coldkey']:
-                val = getattr(n0, field, 'MISSING')
-                if val != 'MISSING':
-                    print(f"    n0.{field} = {val} (type: {type(val).__name__})")
     # Fill None for missing subnets so analyse() doesn't KeyError
     for n in netuids:
         if n not in metagraphs:
@@ -559,6 +536,23 @@ def analyse(data, traj_90d, now):
         name = data["names"].get(netuid) or f"SN{netuid}"
         conviction = data["convictions"].get(netuid)
         graph      = data["metagraphs"].get(netuid)
+
+        # Convert v11 Metagraph object to v2-style parallel-lists dict
+        # so all downstream code (get_best_validator, owner stake, etc.) works unchanged.
+        if graph and not isinstance(graph, dict) and hasattr(graph, 'neurons') and graph.neurons:
+            neurons = graph.neurons
+            graph = {
+                'hotkeys':          [str(getattr(n, 'hotkey', '')) for n in neurons],
+                'coldkeys':         [str(getattr(n, 'coldkey', '')) for n in neurons],
+                'total_stake':      [safe_float(getattr(n, 'total_stake', 0)) for n in neurons],
+                'emission':         [safe_float(getattr(n, 'emission', 0)) for n in neurons],
+                'dividends':        [getattr(n, 'dividends', 0.0) for n in neurons],
+                'incentive':        [getattr(n, 'incentive', 0.0) for n in neurons],
+                'incentives':       [getattr(n, 'incentive', 0.0) for n in neurons],
+                'trust':            [getattr(n, 'trust', None) for n in neurons],
+                'validator_trust':  [getattr(n, 'trust', None) for n in neurons],
+                'validator_permit': [getattr(n, 'validator_permit', False) for n in neurons],
+            }
 
         spot_price         = pool["spot_price"]
         moving_price       = pool["moving_price"]
