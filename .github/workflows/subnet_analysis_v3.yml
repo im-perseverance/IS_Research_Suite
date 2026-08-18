@@ -1,0 +1,63 @@
+# .github/workflows/subnet_analysis.yml — v3
+#
+# Changes vs v2:
+#   - bittensor pinned >=11,<12 via requirements-v3.txt (v2 tools use <11)
+#   - pip cache keyed on requirements-v3.txt
+#   - concurrency group: a slow run and the next schedule can't overlap and
+#     race the trajectory commit
+#   - offline structural tests run as a pre-step (free; exercises
+#     chain_analysis + the pure analysis layer before touching the chain)
+#   - commit message carries the run date (pinned block is in the CSV rows)
+#   - the v2 scalecodec/cyscale workaround is dropped — v11 is a unified
+#     package; restore it only if the resolver proves otherwise
+
+name: Subnet Analysis
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: subnet-analysis
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-v3-${{ runner.os }}-${{ hashFiles('requirements-v3.txt') }}
+          restore-keys: pip-v3-${{ runner.os }}-
+
+      - name: Install v3 dependencies
+        run: pip install -r requirements-v3.txt
+
+      - name: Offline structural tests
+        run: |
+          python test_chain_analysis.py
+          python test_subnet_analysis.py
+
+      - name: Run snapshot
+        run: python subnet_analysis.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add subnet_analysis/
+          DATE=$(date -u +%Y-%m-%d)
+          git commit -m "Subnet analysis v3 ${DATE}" || echo "No changes to commit"
+          git pull --rebase
+          git push
