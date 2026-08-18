@@ -27,7 +27,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install bittensor
+        run: pip install "bittensor<11"
 
       - name: Run validator analysis
         run: python validator_analysis.py --netuid ${{ github.event.inputs.netuid }} --stake ${{ github.event.inputs.stake }}
