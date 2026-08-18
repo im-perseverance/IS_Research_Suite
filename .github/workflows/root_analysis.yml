@@ -25,7 +25,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install bittensor
+        run: pip install "bittensor<11"
 
       - name: Run root analysis
         run: python root_analysis.py --stake ${{ github.event.inputs.stake || 100 }}
