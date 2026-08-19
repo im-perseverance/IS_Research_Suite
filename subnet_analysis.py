@@ -365,7 +365,7 @@ def _norm01(v):
     x = safe_float(v)
     return x / 65535.0 if x > 1.0 else x
 
-def get_best_validator(graph, take_map):
+def get_best_validator(graph, take_map, tempo=360):
     """
     Best take-adjusted nominator APY on a subnet (v2 logic on v11 shapes).
     take_map: {hotkey: take_fraction} from the one-call delegates read.
@@ -382,9 +382,15 @@ def get_best_validator(graph, take_map):
             return None
         total_dividends = sum(_norm01(dividends[i]) for i in range(n_uids)) if dividends else 0
         total_stake     = sum(safe_float(stakes[i]) for i in range(n_uids)) if stakes else 0
+        # v11 neurons may not carry validator_permit; fall back to
+        # dividends>0 as the validator signal (post-dTAO, only permitted
+        # validators earn dividends).
+        if not permits or not any(bool(p) for p in permits):
+            permits = [(_norm01(dividends[i]) > 0 if i < len(dividends) else False)
+                       for i in range(n_uids)]
         best, best_apy = None, -999
         for uid in range(n_uids):
-            if not (permits and uid < len(permits) and permits[uid]):
+            if not (uid < len(permits) and permits[uid]):
                 continue
             stake = safe_float(stakes[uid]) if uid < len(stakes) else 0.0
             if stake < MIN_VALIDATOR_TAO:
@@ -394,8 +400,11 @@ def get_best_validator(graph, take_map):
             stake_pct = stake / total_stake if total_stake > 0 else 0
             if stake_pct <= 0:
                 continue
+            # neuron.emission is alpha per TEMPO (empirically pinned
+            # 2026-08-19: sum(emission)/alpha_out_emission = 0.82 x tempo).
             uid_emission = safe_float(emissions[uid]) if uid < len(emissions) else 0.0
-            raw_apy = (uid_emission / stake) * BLOCKS_PER_YEAR if stake > 0 else 0
+            per_block = uid_emission / tempo if tempo else 0.0
+            raw_apy = (per_block / stake) * BLOCKS_PER_YEAR if stake > 0 else 0
             if raw_apy > MAX_SANE_APY:
                 # Unit artifact (see MAX_SANE_APY note) — never publish garbage.
                 continue
@@ -410,7 +419,9 @@ def get_best_validator(graph, take_map):
                     "hotkey_short": str(hotkey)[:8] + "...",
                     "stake": stake, "take": take, "div_pct": div_pct,
                     "est_apy": est_apy, "raw_apy": raw_apy,
-                    "trust": _norm01(v_trust[uid]) if uid < len(v_trust) else None,
+                    "trust": (_norm01(v_trust[uid])
+                              if uid < len(v_trust) and v_trust[uid] is not None
+                              else None),
                 }
         return best
     except Exception:
@@ -714,7 +725,7 @@ def analyse(data, traj_90d, now):
         combined_30d = (real_apy or 0) + (price_apy_30d or 0) if (real_apy is not None or price_apy_30d is not None) else None
 
         # ── Validator + owner layers ─────────────────────────────────────
-        best_validator = get_best_validator(graph, data["take_map"]) if graph else None
+        best_validator = get_best_validator(graph, data["take_map"], pool.get("tempo") or 360) if graph else None
         vali_miner_share = get_vali_miner_share(graph) if graph else None
         miner_burn_rate  = get_miner_burn_rate(graph)  if graph else None
 
@@ -781,10 +792,18 @@ def analyse(data, traj_90d, now):
         if burned_tokens is not None and supply_days_gap and supply_days_gap > 0:
             mbr = miner_burn_rate if miner_burn_rate is not None else 0.0
             miner_pay_frac = max(0.0, min(1.0, 1.0 - mbr))
-            protocol_burn_frac = max(0.0, min(1.0, 0.59 - 0.41 * miner_pay_frac))
-            alpha_out_protocol_burn = (alpha_out_emission or 0) * protocol_burn_frac * BLOCKS_PER_DAY * supply_days_gap
-            alpha_in_absorbed       = (alpha_in_emission  or 0) * BLOCKS_PER_DAY * supply_days_gap
-            protocol_absorption     = alpha_out_protocol_burn + alpha_in_absorbed
+            if burned_source == "COUNTER":
+                # Counter records explicit burns only. Deduct just the
+                # mechanical withheld-miner component (0.41 x unpaid frac);
+                # everything else in the counter is deliberate.
+                protocol_absorption = ((alpha_out_emission or 0) * 0.41 * (1.0 - miner_pay_frac)
+                                       * BLOCKS_PER_DAY * supply_days_gap)
+            else:
+                # Estimator sees all mechanical supply absorption (v2 model).
+                protocol_burn_frac = max(0.0, min(1.0, 0.59 - 0.41 * miner_pay_frac))
+                protocol_absorption = ((alpha_out_emission or 0) * protocol_burn_frac
+                                       * BLOCKS_PER_DAY * supply_days_gap) \
+                                      + ((alpha_in_emission or 0) * BLOCKS_PER_DAY * supply_days_gap)
             supply_defence, manual_burn = compute_supply_defence(
                 burned_tokens, total_emission, protocol_absorption)
 
@@ -927,6 +946,7 @@ def analyse(data, traj_90d, now):
             "governance_flag": gov_flag,
             "leader_pct_of_threshold": leader_pct,
             "basket_share": basket_share,
+            "basket_alpha": basket_alpha,
         }
 
     # Ranks (v2, unchanged)
@@ -1070,12 +1090,17 @@ def print_report(results, eco):
     # ── Reconciliation alarm (v3) ─────────────────────────────────────────
     recon_div = [r for r in results if r.get("recon_flag") == "DIVERGENT"]
     if recon_div:
-        print(f"\n  🧮  BURN RECONCILIATION DIVERGENCE — estimator vs chain counters")
+        print(f"\n  🧮  BURN RECONCILIATION DIVERGENCE — estimator vs chain counters "
+              f"({len(recon_div)} subnets; top 10 by |gap|)")
+        if len(recon_div) > len(results) * 0.5:
+            print("  ⚠️  SYSTEMATIC: majority of subnets divergent — points at an")
+            print("      estimator-model gap (e.g. Root Reborn basket escrow), not per-subnet noise")
         print(THIN_SEP)
-        for r in recon_div:
+        recon_div.sort(key=lambda r: -abs(r.get("recon_gap_relative") or 0))
+        for r in recon_div[:10]:
             rel = r.get("recon_gap_relative")
             print(f"  ⚠️  SN{r['netuid']:<4} {r['name']:<22} | estimator off by "
-                  f"{rel*100:+.0f}% vs counters — investigate accounting")
+                  f"{rel*100:+.0f}% vs counters")
 
     # EPR leaderboard (v2, unchanged)
     epr_candidates = sorted(
