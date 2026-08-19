@@ -398,10 +398,19 @@ async def subnet_convictions(snap, netuid: int) -> Optional[dict]:
         return None
     entries = []
     owner = None
-    for e in raw.get("entries", []) or []:
+    # The read returns per-hotkey entries under "hotkeys" (verified against
+    # sdk/python/bittensor/reads/locks.py). "entries" fallback kept for
+    # forward-compat. v3 launch bug: reading "entries" only silently dropped
+    # every per-hotkey record — owner locks showed 0.0 network-wide and the
+    # commitment matrix collapsed to all-NEITHER while aggregates still
+    # populated. Absence of a key is not absence of conviction.
+    raw_entries = raw.get("hotkeys") or raw.get("entries") or []
+    owner_hotkey = raw.get("owner_hotkey")
+    for e in raw_entries:
+        hk = str(e.get("hotkey"))
         rec = {
-            "hotkey":              str(e.get("hotkey")),
-            "is_owner":            bool(e.get("is_owner")),
+            "hotkey":              hk,
+            "is_owner":            bool(e.get("is_owner")) or (owner_hotkey is not None and hk == str(owner_hotkey)),
             "locked_alpha":        f(e.get("locked_alpha")),
             "conviction_alpha":    f(e.get("conviction_alpha")),
             "pct_of_threshold":    e.get("pct_of_threshold"),
@@ -419,6 +428,8 @@ async def subnet_convictions(snap, netuid: int) -> Optional[dict]:
         "total_conviction_alpha": f(raw.get("total_conviction_alpha")),
         "alpha_burned":           f(raw.get("alpha_burned")),
         "protocol_alpha":         f(raw.get("protocol_alpha")),
+        "owner_hotkey":           str(owner_hotkey) if owner_hotkey else None,
+        "ownership_changeable_at_block": raw.get("ownership_changeable_at_block"),
         "owner":                  owner,
         "leader":                 entries[0] if entries else None,
         "entries":                entries,
