@@ -302,6 +302,7 @@ _POOL_MAPS = {
     "volume":                  ("SubtensorModule", "SubnetVolume",         from_rao),
     "moving_price":            ("SubtensorModule", "SubnetMovingPrice",    fixed_to_float),
     "registered_at":           ("SubtensorModule", "NetworkRegisteredAt",  lambda v: int(v or 0)),
+    "tempo":                   ("SubtensorModule", "Tempo",                lambda v: int(v) if v else 360),
     "first_emission_block":    ("SubtensorModule", "FirstEmissionBlockNumber", lambda v: int(v) if v is not None else None),
     "ema_halving_blocks":      ("SubtensorModule", "EMAPriceHalvingBlocks", lambda v: int(v) if v is not None else None),
     # AlphaAssets pallet — the v3 primary burn/recycle source (v2 lesson:
