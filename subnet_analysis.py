@@ -106,6 +106,18 @@ ONE_YEAR_BLOCKS   = chain.ONE_YEAR_BLOCKS         # governance gate age — owne
 
 MIN_TAO_EMISSION  = 0.0001
 MIN_VALIDATOR_TAO = 1000.0
+# Unit-suspect guard: live run 2026-08-18 printed validator APYs up to
+# 19,590,654% — the v11 neuron emission field is not yet unit-verified.
+# Any raw per-block yield implying > MAX_SANE_APY is treated as a unit
+# artifact: the validator is skipped and counted, never published.
+# Remove/raise once diagnose_units.py pins the emission unit empirically.
+MAX_SANE_APY = 20.0   # 2000% — generous ceiling for a real validator APY
+# Daily-cadence signals (pool/EMA divergence, flow momentum, owner inflow,
+# large-entry anomaly) compare today against "yesterday". After a long gap
+# (v2->v3 restart: 33 days) those deltas are meaningless and spam the report
+# (80+ false divergences, owner inflow "5076%"). Gate them on a fresh
+# baseline; supply-side metrics (NSD, burns) annualise properly and stay on.
+MAX_SIGNAL_GAP_DAYS = 3
 TRAJECTORY_30D    = 30
 TRAJECTORY_90D    = 90
 IMMUNITY_BLOCKS   = 7200 * 30 * 4
@@ -384,6 +396,9 @@ def get_best_validator(graph, take_map):
                 continue
             uid_emission = safe_float(emissions[uid]) if uid < len(emissions) else 0.0
             raw_apy = (uid_emission / stake) * BLOCKS_PER_YEAR if stake > 0 else 0
+            if raw_apy > MAX_SANE_APY:
+                # Unit artifact (see MAX_SANE_APY note) — never publish garbage.
+                continue
             hotkey = hotkeys[uid]
             take_val = take_map.get(str(hotkey))
             take = max(0.0, min(1.0, safe_float(take_val))) if take_val is not None else None
@@ -465,13 +480,24 @@ async def collect(snap, block, client):
             continue
 
     # Delegate takes: one call replaces v2's per-hotkey RPC cache.
-    print("  Fetching delegate takes (one-call catalog)...")
+    print("  Fetching delegate takes (one-call catalog + Delegates storage)...")
     take_map = {}
+    # Primary: the Delegates storage map itself — hotkey -> u16 take. This is
+    # the canonical source and covers every delegate; the live 2026-08-18 run
+    # showed T:?% for most validators because the runtime `delegates` read
+    # returned only a subset.
+    for hk, tk in (await chain.qmap(snap, "SubtensorModule", "Delegates")).items():
+        try:
+            take_map[str(hk)] = chain.u16_frac(tk)
+        except Exception:
+            continue
+    # Secondary: the runtime read (already-normalized takes) overlays on top.
     for d in await chain.delegates(snap):
         hk = getattr(d, "hotkey", None) or (d.get("hotkey") if isinstance(d, dict) else None)
         tk = getattr(d, "take", None) if not isinstance(d, dict) else d.get("take")
         if hk is not None and tk is not None:
             take_map[str(hk)] = safe_float(tk)
+    print(f"  Delegate takes    : {len(take_map)} hotkeys")
 
     netuids = sorted(pools.keys())
 
@@ -550,7 +576,7 @@ def analyse(data, traj_90d, now):
                 'incentive':        [getattr(n, 'incentive', 0.0) for n in neurons],
                 'incentives':       [getattr(n, 'incentive', 0.0) for n in neurons],
                 'trust':            [getattr(n, 'trust', None) for n in neurons],
-                'validator_trust':  [getattr(n, 'trust', None) for n in neurons],
+                'validator_trust':  [getattr(n, 'validator_trust', None) for n in neurons],
                 'validator_permit': [getattr(n, 'validator_permit', False) for n in neurons],
             }
 
@@ -633,9 +659,11 @@ def analyse(data, traj_90d, now):
         # ── Flow signals (v2 set) ────────────────────────────────────────
         ema_tao_inflow = data["ema_inflow"].get(netuid)
 
+        fresh_baseline = supply_days_gap is not None and supply_days_gap <= MAX_SIGNAL_GAP_DAYS
+
         pool_growth_real = None
         pool_ema_divergence = None
-        if prev is not None and spot_price and spot_price > 0:
+        if fresh_baseline and prev is not None and spot_price and spot_price > 0:
             prev_tao, prev_spot = prev.get("tao_reserves"), prev.get("spot_price")
             if prev_tao and prev_spot and prev_spot > 0:
                 pool_growth_real = (tao_reserves / spot_price) - (prev_tao / prev_spot)
@@ -647,7 +675,7 @@ def analyse(data, traj_90d, now):
 
         flow_momentum = None
         flow_price_divergence = None
-        if prev is not None and ema_tao_inflow is not None:
+        if fresh_baseline and prev is not None and ema_tao_inflow is not None:
             prev_ema_inflow = prev.get("ema_tao_inflow")
             if prev_ema_inflow is not None and prev_ema_inflow != 0:
                 flow_momentum = (ema_tao_inflow - prev_ema_inflow) / abs(prev_ema_inflow)
@@ -708,7 +736,7 @@ def analyse(data, traj_90d, now):
         # Owner inflow detection (v2 identity layer, unchanged)
         owner_inflow_pct = None
         owner_inflow_flag = None
-        if owner_stake is not None and prev is not None:
+        if fresh_baseline and owner_stake is not None and prev is not None:
             prev_owner_stake = prev.get("owner_stake")
             prev_tao_rsv     = prev.get("tao_reserves")
             if prev_owner_stake is not None and prev_tao_rsv is not None and prev_tao_rsv > 0:
@@ -728,7 +756,7 @@ def analyse(data, traj_90d, now):
         # Behavioural layer: large entry anomaly (v2, unchanged)
         large_entry_anomaly = None
         cutoff_7d = (now - timedelta(days=7)).strftime("%Y-%m-%d")
-        if pool_growth_real is not None and prev_entries:
+        if fresh_baseline and pool_growth_real is not None and prev_entries:
             prev_7d = [e for e in prev_entries if e.get("date", "") >= cutoff_7d]
             if prev_7d:
                 avg_daily_growth = sum(e.get("pool_growth_real", 0) or 0 for e in prev_7d) / len(prev_7d)
