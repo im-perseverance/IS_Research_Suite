@@ -1,0 +1,25 @@
+# .github/workflows/diagnose-units.yml
+# One-shot probe: pins v11 metagraph units against pool-state ground truth.
+# Run once from the Actions tab, paste the ratio lines back for the final
+# emission-unit patch, then this workflow can be deleted.
+name: diagnose units (one-shot)
+on:
+  workflow_dispatch:
+    inputs:
+      netuids:
+        description: "Space-separated netuids to probe"
+        required: false
+        default: "64 9 19"
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install v3 dependencies
+        run: pip install -r requirements-v3.txt
+      - name: Probe units
+        run: python diagnose_units.py ${{ inputs.netuids }}
