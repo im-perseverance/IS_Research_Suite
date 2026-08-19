@@ -1,132 +1,176 @@
-"""Offline structural test for chain_analysis.py with a stubbed snapshot."""
-import asyncio, sys, types, json, tempfile, os
-import chain_analysis as ca
+"""Offline end-to-end test for subnet_analysis.py v3 (pure layers, no chain)."""
+import json, tempfile, io, contextlib
+from pathlib import Path
+from datetime import datetime, timezone, timedelta
+import subnet_analysis as sa
 
-# ── unit helpers ──
-class Bal:
-    def __init__(self, rao): self.rao = rao
-    @property
-    def tao(self): return self.rao / 1e9
-assert ca.f(Bal(1_500_000_000)) == 1.5
-assert ca.f(2.5) == 2.5 and ca.f(None, None) is None
-assert ca.from_rao(1_000_000_000) == 1.0
-assert abs(ca.fixed_to_float({'bits': 3 << 32}) - 3.0) < 1e-9
-assert abs(ca.fixed_to_float(0.0125) - 0.0125) < 1e-12
-assert abs(ca.u16_frac(11796) - 0.18) < 0.001
-assert abs(ca.u64_weight(int(0.18 * (2**64 - 1))) - 0.18) < 1e-6
-assert ca.u64_weight(0.18) == 0.18
-print("units OK")
+now = datetime.now(timezone.utc)
+today = now.strftime("%Y-%m-%d")
+yday  = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+BLOCK = 9_000_000
+OLD_REG = BLOCK - sa.ONE_YEAR_BLOCKS - 1000   # gate-eligible
+NEW_REG = BLOCK - 100_000                     # immune, not gate-eligible
 
-# ── stub bittensor module so storage getattr resolves ──
-bt = types.ModuleType("bittensor")
-class _Item:
-    def __init__(s, p, i): s.p, s.i = p, i
-class _Pallet:
-    def __init__(s, name): s._n = name
-    def __getattr__(s, item): return _Item(s._n, item)
-class _Storage:
-    def __getattr__(s, p): return _Pallet(p)
-bt.storage = _Storage()
-sys.modules["bittensor"] = bt
+def pool(n, **kw):
+    base = dict(netuid=n, tao_reserves=5000.0, alpha_in_pool=5000.0,
+                alpha_outstanding=10000.0, protocol_alpha=100.0,
+                tao_in_emission=0.005, alpha_in_emission=0.002,
+                alpha_out_emission=0.01, volume=1000.0, moving_price=0.5,
+                registered_at=OLD_REG, first_emission_block=1, ema_halving_blocks=216000,
+                alpha_burned=1000.0, alpha_recycled=50.0,
+                total_alpha_issuance=15000.0, spot_price=0.5)
+    base.update(kw); return base
 
-# ── stub snapshot ──
-NETS = [1, 64]
-RAO = 10**9
-class Snap:
-    async def query(self, item, params):
-        return {"TaoWeight": int(0.18*(2**64-1)), "SubnetOwnerCut": 11796,
-                "MaturityRate": 311622, "UnlockRate": 934866}.get(item.i)
-    async def query_map(self, item, params):
-        if item.i == "NetworksAdded": return [((0,), True)] + [((n,), True) for n in NETS]
-        if item.i == "SubnetMovingPrice": return [((n,), {"bits": (1*n) << 32}) for n in NETS]
-        if item.i in ("NetworkRegisteredAt",): return [((n,), 1000+n) for n in NETS]
-        if item.i in ("FirstEmissionBlockNumber","EMAPriceHalvingBlocks"): return [((n,), 7200) for n in NETS]
-        return [((n,), n * RAO) for n in NETS]   # everything else: n tokens in rao
-    async def read(self, name, **kw):
-        if name == "alpha_prices": return {1: 0.5, 64: 0.9}
-        if name == "root_claim_threshold": return Bal(500_000)
-        if name == "root_baskets":
-            return [{"hotkey":"5F...","nav_tao":Bal(90*RAO),"spot_nav_tao":Bal(100*RAO),
-                     "deposited_tao":Bal(80*RAO),"redeemed_tao":Bal(10*RAO),
-                     "lifetime_return":1.25,"weights":[],
-                     "holdings":[{"netuid":64,"alpha":Bal(5*RAO),"spot_tao":Bal(4*RAO),"realizable_tao":Bal(3*RAO)}]}]
-        if name == "subnet_convictions":
-            # real v11 read shape: per-hotkey records under "hotkeys",
-            # canonical owner via top-level "owner_hotkey" (locks.py)
-            return {"eligible_alpha":Bal(1000*RAO),"threshold_alpha":Bal(180*RAO),
-                    "total_locked_alpha":Bal(300*RAO),"total_conviction_alpha":Bal(250*RAO),
-                    "alpha_burned":Bal(50*RAO),"protocol_alpha":Bal(20*RAO),
-                    "owner_hotkey":"5Own","ownership_changeable_at_block":777,
-                    "hotkeys":[{"hotkey":"5Own","is_owner":False,"locked_alpha":Bal(200*RAO),
-                                "conviction_alpha":Bal(200*RAO),"pct_of_threshold":1.11,"blocks_to_threshold":0},
-                               {"hotkey":"5Gen","is_owner":False,"locked_alpha":Bal(100*RAO),
-                                "conviction_alpha":Bal(50*RAO),"pct_of_threshold":0.28,"blocks_to_threshold":None}]}
-        return None
+def conv(owner_locked, leader_is_owner, leader_pct, total_locked):
+    entries = []
+    owner = None
+    if owner_locked:
+        owner = {"hotkey": "5Own", "is_owner": True, "locked_alpha": owner_locked,
+                 "conviction_alpha": owner_locked, "pct_of_threshold": 0.2,
+                 "blocks_to_threshold": None}
+        entries.append(owner)
+    leader = {"hotkey": "5Own" if leader_is_owner else "5Foe",
+              "is_owner": leader_is_owner,
+              "locked_alpha": total_locked, "conviction_alpha": total_locked + 1,
+              "pct_of_threshold": leader_pct, "blocks_to_threshold": 14400}
+    entries.insert(0, leader) if not leader_is_owner else None
+    ec = sorted(entries + ([leader] if leader_is_owner and not owner else []),
+                key=lambda r: -(r["conviction_alpha"] or 0))
+    return {"netuid": 0, "eligible_alpha": 9000.0, "threshold_alpha": 1620.0,
+            "total_locked_alpha": total_locked, "total_conviction_alpha": total_locked,
+            "alpha_burned": 1000.0, "protocol_alpha": 100.0,
+            "owner": owner, "leader": ec[0], "entries": ec}
 
-async def main():
-    s = Snap()
-    pools = await ca.all_subnet_pool_state(s)
-    assert set(pools) == {1, 64}, pools.keys()
-    assert pools[64]["alpha_burned"] == 64.0 and pools[1]["spot_price"] == 0.5
-    assert pools[64]["moving_price"] == 64.0 and pools[1]["registered_at"] == 1001
-    params = await ca.governance_params(s)
-    assert abs(params["tao_weight"]-0.18) < 1e-6 and params["unlock_rate_blocks"] == 934866
-    assert params["root_claim_threshold"] == 0.0005
-    b = await ca.root_baskets(s)
-    assert abs(b[0]["nav_haircut"] - 0.10) < 1e-9
-    exp = await ca.basket_subnet_exposure(s, b)
-    assert exp == {64: 5.0}
-    c = await ca.subnet_convictions(s, 64)
-    assert c["owner"]["hotkey"] == "5Own" and c["leader"]["is_owner"] is True
-    assert c["total_locked_alpha"] == 300.0
-    assert c["owner_hotkey"] == "5Own"          # crosscheck path fixed is_owner
-    assert c["owner"]["locked_alpha"] == 200.0  # per-hotkey records survive
-    print("pool/params/baskets/convictions OK")
+def mg():
+    return {"hotkeys": ["hkA", "hkB"], "coldkeys": ["ckOwner", "ckB"],
+            "total_stake": [5000.0, 2000.0], "dividends": [40000, 25535],
+            "emission": [0.004, 0.002], "validator_permit": [True, True],
+            "incentives": [0.5, 0.5], "validator_trust": [60000, 30000]}
 
-asyncio.run(main())
+def prev_entry(alpha_out, alpha_in, burned_cum, recycled_cum):
+    return {"date": yday, "block": BLOCK - 7200, "spot_price": 0.48,
+            "moving_price": 0.5, "alpha_outstanding": alpha_out,
+            "alpha_in_pool": alpha_in, "alpha_out_emission": 0.01,
+            "alpha_in_emission": 0.002, "tao_reserves": 4900.0,
+            "emission_apy": 0.05, "ema_tao_inflow": 1.5, "owner_stake": 4000.0,
+            "alpha_burned_cum": burned_cum, "alpha_recycled_cum": recycled_cum,
+            "pool_growth_real": 1.0}
 
-# ── reconciliation ──
-prev = {"alpha_burned": 100.0, "alpha_recycled": 10.0}
-cur  = {"alpha_burned": 130.0, "alpha_recycled": 15.0, "alpha_out_emission": 0.1, "_days_gap": 1.0}
-r = ca.burn_reconciliation(prev, cur, estimator_burned=34.0)
-assert r["counter_destroyed"] == 35.0 and r["flag"] == "OK", r
-r2 = ca.burn_reconciliation(prev, cur, estimator_burned=12.0)
-assert r2["flag"] == "DIVERGENT", r2
-assert ca.burn_reconciliation({}, cur, 1.0) is None
-print("reconciliation OK")
+# SN10 FORTRESS: counters engage, recon OK, owner locked, leader=owner
+# est raw burn 95 vs counter 100+0 → rel -5% OK
+p10 = pool(10, alpha_outstanding=9991.4, alpha_burned=1000.0, alpha_recycled=50.0)
+t10 = prev_entry(10000.0, 5000.0, 900.0, 50.0)
+c10 = conv(owner_locked=300.0, leader_is_owner=True, leader_pct=0.19, total_locked=800.0)
 
-# ── trajectory I/O ──
-d = tempfile.mkdtemp()
-p = os.path.join(d, "traj.json")
-t = ca.upsert_by_date([], {"date": "2026-08-17", "x": 1})
-t = ca.upsert_by_date(t, {"date": "2026-08-16", "x": 0})
-t = ca.upsert_by_date(t, {"date": "2026-08-17", "x": 2})
-assert [e["x"] for e in t] == [0, 2]
-ca.save_json(p, t)
-assert ca.load_json(p) == t
-print("trajectory OK")
-print("ALL STRUCTURAL TESTS PASSED")
+# SN20 EXPOSED + TAKEOVER_IMMINENT + recon DIVERGENT
+# counter burned 300; estimator ~90 → rel ≈ -70% DIVERGENT
+p20 = pool(20, alpha_outstanding=9996.4, alpha_burned=800.0, alpha_recycled=0.0,
+           alpha_in_pool=5000.0)
+t20 = prev_entry(10000.0, 5000.0, 500.0, 0.0)
+c20 = conv(owner_locked=0.0, leader_is_owner=False, leader_pct=0.85, total_locked=600.0)
 
-# ── feedback-round regression cases ──
-assert ca.u16_frac(0.18) == 0.18                      # pre-normalized pass-through
-assert abs(ca.u16_frac(11796) - 0.18) < 0.001         # raw u16 still decodes
-# counter decrease: clamped math + raw deltas surfaced via warning path
-import logging as _lg
-rec = ca.burn_reconciliation(
-    {"alpha_burned": 100.0, "alpha_recycled": 10.0},
-    {"alpha_burned": 90.0, "alpha_recycled": 15.0, "alpha_out_emission": 0.1,
-     "_days_gap": 1.0, "netuid": 7},
-    estimator_burned=5.0)
-assert rec["delta_burned"] == 0.0 and rec["delta_recycled"] == 5.0
-assert rec["raw_delta_burned"] == -10.0 and rec["raw_delta_recycled"] == 5.0
-# alpha_prices list shapes
-async def _shapes():
-    class S(Snap):
-        async def read(self, name, **kw):
-            if name == "alpha_prices":
-                return [{"netuid": 1, "tao_per_alpha": 0.5}, (64, 0.9)]
-            return await Snap.read(self, name, **kw)
-    pools = await ca.all_subnet_pool_state(S())
-    assert pools[1]["spot_price"] == 0.5 and pools[64]["spot_price"] == 0.9
-asyncio.run(_shapes())
-print("FEEDBACK-ROUND CASES PASSED")
+# SN30 UNDEFENDED_BURNER: burning, no owner lock, leader is owner (low pct)
+p30 = pool(30, alpha_outstanding=9991.4, alpha_burned=1200.0, alpha_recycled=10.0)
+t30 = prev_entry(10000.0, 5000.0, 1100.0, 10.0)
+c30 = conv(owner_locked=0.0, leader_is_owner=True, leader_pct=0.10, total_locked=50.0)
+
+# SN40 first run: no trajectory, young subnet
+p40 = pool(40, registered_at=NEW_REG)
+c40 = conv(owner_locked=100.0, leader_is_owner=True, leader_pct=0.05, total_locked=100.0)
+
+data = {
+    "block": BLOCK,
+    "pools": {10: p10, 20: p20, 30: p30, 40: p40},
+    "params": {"tao_weight": 0.18, "owner_cut": 0.18,
+               "maturity_rate_blocks": 311622, "unlock_rate_blocks": 934866,
+               "root_claim_threshold": 0.0005},
+    "names": {10: "fortress", 20: "exposed", 30: "siege", 40: "newborn"},
+    "owners": {10: "ckOwner", 20: "ckOwner", 30: "ckOwner", 40: "ckOwner"},
+    "ema_inflow": {10: 2.0, 20: 1.0, 30: 0.5, 40: 0.1},
+    "basket_exposure": {10: 500.0},
+    "take_map": {"hkA": 0.09, "hkB": 0.18},
+    "convictions": {10: c10, 20: c20, 30: c30, 40: c40},
+    "metagraphs": {10: mg(), 20: mg(), 30: mg(), 40: mg()},
+}
+traj_90d = {"10": [t10], "20": [t20], "30": [t30]}
+
+results, traj_entries = sa.analyse(data, traj_90d, now)
+R = {r["netuid"]: r for r in results}
+
+# burn source + counters
+assert R[10]["burned_source"] == "COUNTER" and abs(R[10]["burned_tokens"] - 100.0) < 1e-6
+assert abs(R[10]["recycled_tokens"] - 0.0) < 1e-6
+assert R[40]["burned_source"] is None and R[40]["burned_tokens"] is None
+# reconciliation
+assert R[10]["recon_flag"] == "OK", R[10]["recon_flag"]
+assert R[20]["recon_flag"] == "DIVERGENT", R[20]["recon_flag"]
+# commitment matrix
+assert R[10]["commitment_class"] == "FORTRESS", R[10]["commitment_class"]
+assert R[20]["commitment_class"] == "EXPOSED", R[20]["commitment_class"]
+assert R[10]["owner_lock_ratio"] > 0.005 and R[20]["owner_lock_ratio"] == 0.0
+assert R[10]["burn_coverage"] > sa.BURN_COVERAGE_ACTIVE
+# governance
+assert R[20]["governance_flag"] == "TAKEOVER_IMMINENT", R[20]["governance_flag"]
+assert R[30]["governance_flag"] == "UNDEFENDED_BURNER", R[30]["governance_flag"]
+assert R[10]["governance_flag"] is None
+assert R[40]["gate_eligible"] is False and R[40]["immune"] is True
+# basket + live EMA basis
+assert abs(R[10]["basket_share"] - 500.0/9991.4) < 1e-9
+assert abs(R[10]["ema_halving_days"] - 30.0) < 1e-9
+# best validator: emission is alpha/TEMPO (diagnose_units 2026-08-19);
+# hkB still wins on per-stake emission after tempo conversion + 18% take
+raw_b = (0.002/360)/2000*sa.BLOCKS_PER_YEAR
+assert abs(R[10]["best_validator_apy"] - raw_b*0.82) < 1e-12
+assert R[10]["best_validator_take"] == 0.18
+assert R[10]["best_validator_hotkey"] == "hkB..."
+# COUNTER-source decomposition: incentives sum 1.0 -> no mechanical
+# deduction -> manual burn equals the counter delta (100a on SN10)
+assert abs(R[10]["manual_burn"] - 100.0) < 1e-9
+assert abs(R[10]["burn_coverage"] - 100.0/(0.01*0.18*7200)) < 1e-9
+# trajectory entries carry v3 fields
+assert traj_entries["10"]["alpha_burned_cum"] == 1000.0
+assert traj_entries["20"]["commitment_class"] == "EXPOSED"
+print("analyse() assertions OK")
+
+eco = sa.ecosystem_stats(results)
+assert eco["counter_coverage"] == 3 and eco["recon_divergent"] == 1
+assert eco["matrix_counts"]["FORTRESS"] == 1
+assert eco["governance_flags"]["TAKEOVER_IMMINENT"] == 1
+assert eco["governance_flags"]["UNDEFENDED_BURNER"] == 1
+print("ecosystem_stats OK")
+
+# report renders without error
+buf = io.StringIO()
+with contextlib.redirect_stdout(buf):
+    sa.print_report(results, eco)
+out = buf.getvalue()
+assert "COMMITMENT MATRIX" in out and "GOVERNANCE EXPOSURE" in out
+assert "BURN RECONCILIATION DIVERGENCE" in out and "TAKEOVER_IMMINENT" in out
+print("print_report OK")
+
+# persistence round-trip in tmpdir
+tmp = Path(tempfile.mkdtemp())
+sa.OUTPUT_DIR = tmp / "subnet_analysis"
+sa.OUTPUT_METADATA_DIR = sa.OUTPUT_DIR / "metadata"
+sa.OUTPUT_SNAPSHOT_DIR = sa.OUTPUT_DIR / "snapshots"
+sa.OUTPUT_DIR.mkdir(parents=True)
+sa.save_json(sa.OUTPUT_DIR / "trajectory_90d.json", traj_90d)
+with contextlib.redirect_stdout(io.StringIO()):
+    csv_path = sa.persist(results, traj_entries, eco, now, BLOCK)
+import csv as _csv
+rows = list(_csv.DictReader(open(csv_path)))
+assert len(rows) == 4
+assert rows[0].keys().__contains__("commitment_class")
+byid = {r["netuid"]: r for r in rows}
+assert byid["10"]["commitment_class"] == "FORTRESS"
+assert byid["20"]["governance_flag"] == "TAKEOVER_IMMINENT"
+assert byid["10"]["burned_source"] == "COUNTER"
+t90 = json.load(open(sa.OUTPUT_DIR / "trajectory_90d.json"))
+assert t90["10"][-1]["date"] == today and t90["10"][-1]["alpha_burned_cum"] == 1000.0
+meta = json.load(open(sa.OUTPUT_METADATA_DIR / f"staking_metadata_{today}.json"))
+assert meta["ecosystem_conviction"]["commitment_matrix"]["FORTRESS"] == 1
+assert meta["burn_accounting"]["reconciliation_divergent"] == 1
+eco_t = json.load(open(sa.OUTPUT_DIR / "trajectory_ecosystem.json"))
+assert eco_t[-1]["counter_coverage"] == 3
+print("persist round-trip OK")
+print("ALL SUBNET v3 TESTS PASSED")
