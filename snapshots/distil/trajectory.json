@@ -5,34 +5,34 @@
   "displaced_subnet": "FlameWire",
   "owner_hotkey": "5G9ZvMXQEecYs8eA4xQ6Mrb9BHPQWs2g7u2RR6UXxrWQceZW",
   "generated_by": "Intelligence Sovereignty Research Suite | @perseverance",
-  "snapshots_count": 108,
+  "snapshots_count": 109,
   "first_snapshot": "2026-04-15",
-  "latest_snapshot": "2026-09-02",
+  "latest_snapshot": "2026-09-03",
   "summary": {
-    "days_tracked": 108,
+    "days_tracked": 109,
     "first_date": "2026-04-15",
-    "latest_date": "2026-09-02",
+    "latest_date": "2026-09-03",
     "first_day": 33,
-    "latest_day": 173,
+    "latest_day": 174,
     "price_first": 0.07187856,
-    "price_latest": 0.02328715,
+    "price_latest": 0.02286473,
     "price_min": 0.02086684,
     "price_max": 0.07187856,
-    "price_change_total_pct": -67.6,
+    "price_change_total_pct": -68.19,
     "tao_reserves_first": 2016.0477,
-    "tao_reserves_latest": 12221.6508,
+    "tao_reserves_latest": 12171.6131,
     "tao_reserves_min": 1944.0084,
     "tao_reserves_max": 12264.7994,
-    "tao_reserves_net_change": 10205.6031,
+    "tao_reserves_net_change": 10155.5654,
     "total_stake_first": 863805.69,
-    "total_stake_latest": 1684030.25,
+    "total_stake_latest": 1683397.32,
     "total_stake_max": 1695547.67,
     "n_active_first": 4,
     "n_active_latest": 7,
     "n_active_max": 28,
     "combined_apy_min": -74.7097,
     "combined_apy_max": 861.7074,
-    "combined_apy_latest": 3.4758,
+    "combined_apy_latest": -10.7415,
     "structural_events": [
       {
         "date": "2026-04-16",
@@ -1180,6 +1180,11 @@
         "date": "2026-09-02",
         "uid_concentration": "HIGH RISK",
         "ck_concentration": "HIGH RISK"
+      },
+      {
+        "date": "2026-09-03",
+        "uid_concentration": "HIGH RISK",
+        "ck_concentration": "HIGH RISK"
       }
     ],
     "yuma_history": [
@@ -1830,6 +1835,12 @@
         "aligned": 3,
         "partial": 0,
         "misaligned": 1
+      },
+      {
+        "date": "2026-09-03",
+        "aligned": 3,
+        "partial": 0,
+        "misaligned": 1
       }
     ],
     "owner_stake_history": [
@@ -2370,6 +2381,11 @@
       },
       {
         "date": "2026-09-02",
+        "owner_uid": null,
+        "owner_stake_pct": 0.0
+      },
+      {
+        "date": "2026-09-03",
         "owner_uid": null,
         "owner_stake_pct": 0.0
       }
@@ -8419,6 +8435,60 @@
       "annotations": [
         "-1 UID(s) exited \u2014 miner churn"
       ]
+    },
+    {
+      "date": "2026-09-03",
+      "day": 174,
+      "timestamp": "2026-09-03 15:25:37 UTC",
+      "block": 8987693,
+      "tao_reserves": 12171.6131,
+      "alpha_reserves": 532331.57,
+      "alpha_out": 1072663.25,
+      "price": 0.02286473,
+      "moving_price": 0.02310895,
+      "momentum_pct": -1.0568,
+      "emission_per_block": 0.008499,
+      "emission_apy": 1.326,
+      "price_apy": -12.0675,
+      "combined_apy": -10.7415,
+      "genesis_momentum_clamped": false,
+      "n_uids": 256,
+      "n_active": 7,
+      "n_validators": 4,
+      "total_stake": 1683397.32,
+      "uid_top1_pct": 0.788473,
+      "uid_top3_pct": 0.999172,
+      "uid_top5_pct": 0.999895,
+      "uid_concentration": "HIGH RISK",
+      "ck_top1_pct": 0.654458,
+      "ck_top3_pct": 0.751346,
+      "ck_top5_pct": 0.783616,
+      "ck_concentration": "HIGH RISK",
+      "yuma_aligned": 3,
+      "yuma_partial": 0,
+      "yuma_misaligned": 1,
+      "owner_uid": null,
+      "owner_stake": 0.0,
+      "owner_stake_pct": 0.0,
+      "deltas": {
+        "tao_reserves": -50.037654,
+        "alpha_out": 1601.772758,
+        "price": -0.000422,
+        "momentum_pct": -1.229202,
+        "total_stake": -632.926735,
+        "n_active": 0,
+        "uid_top1_pct": 0.000345,
+        "emission_apy": -0.029693,
+        "combined_apy": -14.217253,
+        "owner_stake_pct": null
+      },
+      "pct_changes": {
+        "tao_reserves": -0.4094,
+        "price": -1.814,
+        "total_stake": -0.0376,
+        "alpha_out": 0.1496
+      },
+      "annotations": []
     }
   ]
 }
