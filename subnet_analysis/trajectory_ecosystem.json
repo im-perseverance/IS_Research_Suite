@@ -2913,5 +2913,41 @@
     },
     "recon_divergent": 118,
     "counter_coverage": 126
+  },
+  {
+    "date": "2026-09-20",
+    "block": 9109771,
+    "inflation_median_annual": 0.6812621968777526,
+    "inflation_mean_annual": 2.3936171044282437,
+    "inflation_median_monthly": 0.05677184973981272,
+    "inflation_mean_monthly": 0.19946809203568697,
+    "inflation_min": -42.602015287329515,
+    "inflation_max": 187.56844725630117,
+    "inflation_count": 124,
+    "defence_median": 0.010579978914786526,
+    "defence_mean": 0.14728081561372938,
+    "defence_count": 124,
+    "total_burned": 132207.4584566279,
+    "subnets_active": 56,
+    "subnets_total": 128,
+    "ema_lag_traps": 1,
+    "flow_divergences": 0,
+    "total_recycled": 11528.834698824983,
+    "total_locked": 31631480.39006747,
+    "locked_subnets": 121,
+    "locked_float_ratio_median": 0.0591549903647843,
+    "commitment_matrix": {
+      "DORMITORY": 48,
+      "FORTRESS": 41,
+      "NEITHER": 19,
+      "EXPOSED": 16
+    },
+    "governance_flags": {
+      "TAKEOVER_IMMINENT": 1,
+      "TAKEOVER_WATCH": 0,
+      "UNDEFENDED_BURNER": 7
+    },
+    "recon_divergent": 112,
+    "counter_coverage": 124
   }
 ]
