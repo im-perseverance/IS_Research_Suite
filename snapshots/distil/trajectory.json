@@ -5,34 +5,34 @@
   "displaced_subnet": "FlameWire",
   "owner_hotkey": "5G9ZvMXQEecYs8eA4xQ6Mrb9BHPQWs2g7u2RR6UXxrWQceZW",
   "generated_by": "Intelligence Sovereignty Research Suite | @perseverance",
-  "snapshots_count": 132,
+  "snapshots_count": 133,
   "first_snapshot": "2026-04-15",
-  "latest_snapshot": "2026-09-26",
+  "latest_snapshot": "2026-09-27",
   "summary": {
-    "days_tracked": 132,
+    "days_tracked": 133,
     "first_date": "2026-04-15",
-    "latest_date": "2026-09-26",
+    "latest_date": "2026-09-27",
     "first_day": 33,
-    "latest_day": 197,
+    "latest_day": 198,
     "price_first": 0.07187856,
-    "price_latest": 0.01617425,
+    "price_latest": 0.01635864,
     "price_min": 0.01617425,
     "price_max": 0.07187856,
-    "price_change_total_pct": -77.5,
+    "price_change_total_pct": -77.24,
     "tao_reserves_first": 2016.0477,
-    "tao_reserves_latest": 11341.9378,
+    "tao_reserves_latest": 11448.6594,
     "tao_reserves_min": 1944.0084,
     "tao_reserves_max": 12915.9585,
-    "tao_reserves_net_change": 9325.8901,
+    "tao_reserves_net_change": 9432.6117,
     "total_stake_first": 863805.69,
-    "total_stake_latest": 1673506.16,
+    "total_stake_latest": 1682570.28,
     "total_stake_max": 1726457.05,
     "n_active_first": 4,
     "n_active_latest": 8,
     "n_active_max": 28,
     "combined_apy_min": -74.7097,
     "combined_apy_max": 861.7074,
-    "combined_apy_latest": -38.5967,
+    "combined_apy_latest": -4.9298,
     "structural_events": [
       {
         "date": "2026-04-16",
@@ -1320,6 +1320,11 @@
         "date": "2026-09-26",
         "uid_concentration": "HIGH RISK",
         "ck_concentration": "HIGH RISK"
+      },
+      {
+        "date": "2026-09-27",
+        "uid_concentration": "HIGH RISK",
+        "ck_concentration": "HIGH RISK"
       }
     ],
     "yuma_history": [
@@ -2114,6 +2119,12 @@
         "aligned": 3,
         "partial": 0,
         "misaligned": 0
+      },
+      {
+        "date": "2026-09-27",
+        "aligned": 3,
+        "partial": 0,
+        "misaligned": 0
       }
     ],
     "owner_stake_history": [
@@ -2774,6 +2785,11 @@
       },
       {
         "date": "2026-09-26",
+        "owner_uid": null,
+        "owner_stake_pct": 0.0
+      },
+      {
+        "date": "2026-09-27",
         "owner_uid": null,
         "owner_stake_pct": 0.0
       }
@@ -10125,6 +10141,60 @@
         "price": -5.8355,
         "total_stake": -0.9811,
         "alpha_out": -1.2207
+      },
+      "annotations": []
+    },
+    {
+      "date": "2026-09-27",
+      "day": 198,
+      "timestamp": "2026-09-27 15:57:45 UTC",
+      "block": 9160176,
+      "tao_reserves": 11448.6594,
+      "alpha_reserves": 699854.25,
+      "alpha_out": 1133405.93,
+      "price": 0.01635864,
+      "moving_price": 0.01643966,
+      "momentum_pct": -0.4929,
+      "emission_per_block": 0.005707,
+      "emission_apy": 0.8908,
+      "price_apy": -5.8206,
+      "combined_apy": -4.9298,
+      "genesis_momentum_clamped": false,
+      "n_uids": 256,
+      "n_active": 8,
+      "n_validators": 3,
+      "total_stake": 1682570.28,
+      "uid_top1_pct": 0.806246,
+      "uid_top3_pct": 0.99807,
+      "uid_top5_pct": 0.999193,
+      "uid_concentration": "HIGH RISK",
+      "ck_top1_pct": 0.730438,
+      "ck_top3_pct": 0.830689,
+      "ck_top5_pct": 0.873978,
+      "ck_concentration": "HIGH RISK",
+      "yuma_aligned": 3,
+      "yuma_partial": 0,
+      "yuma_misaligned": 0,
+      "owner_uid": null,
+      "owner_stake": 0.0,
+      "owner_stake_pct": 0.0,
+      "deltas": {
+        "tao_reserves": 106.721555,
+        "alpha_out": 11275.321078,
+        "price": 0.000184,
+        "momentum_pct": 3.632648,
+        "total_stake": 9064.124515,
+        "n_active": 0,
+        "uid_top1_pct": -0.000213,
+        "emission_apy": 0.00212,
+        "combined_apy": 33.666935,
+        "owner_stake_pct": null
+      },
+      "pct_changes": {
+        "tao_reserves": 0.9409,
+        "price": 1.14,
+        "total_stake": 0.5416,
+        "alpha_out": 1.0048
       },
       "annotations": []
     }
