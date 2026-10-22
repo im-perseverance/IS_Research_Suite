@@ -1,174 +1,174 @@
 {
-  "block": 9333247,
-  "timestamp": "2026-10-21 17:09:24 UTC",
+  "block": 9340442,
+  "timestamp": "2026-10-22 17:08:14 UTC",
   "netuid": 107,
-  "tao_reserves": 19928.620038144,
-  "alpha_reserves": 621730.695023043,
-  "alpha_out": 1759005.301015784,
-  "price": 0.032053524,
-  "moving_price": 0.03288131603039801,
-  "momentum_pct": -2.5175149000506454,
-  "emission_per_block": 0.009358284,
-  "emission_apy": 1.4018668960412404,
-  "price_apy": -26.392718834352657,
-  "combined_apy": -24.990851938311415,
+  "tao_reserves": 19563.931635995,
+  "alpha_reserves": 637570.193918128,
+  "alpha_out": 1752365.155250356,
+  "price": 0.030685168,
+  "moving_price": 0.031651929253712296,
+  "momentum_pct": -3.054351745712028,
+  "emission_per_block": 0.008939514,
+  "emission_apy": 1.351056305171423,
+  "price_apy": -31.050931865102026,
+  "combined_apy": -29.699875559930604,
   "n_uids": 100,
-  "n_active": 69,
+  "n_active": 56,
   "n_validators": 8,
-  "total_stake": 1753344.1835633803,
-  "uid_top1_pct": 0.7798651359033478,
-  "uid_top3_pct": 0.939968528148897,
-  "uid_top5_pct": 0.9743470909490975,
+  "total_stake": 1737864.8202207375,
+  "uid_top1_pct": 0.7784102993857576,
+  "uid_top3_pct": 0.9407459801978971,
+  "uid_top5_pct": 0.974640791188946,
   "uid_concentration": "HIGH RISK",
-  "ck_top1_pct": 0.6616247458075892,
-  "ck_top3_pct": 0.7537149716596288,
-  "ck_top5_pct": 0.7983200599943769,
+  "ck_top1_pct": 0.6711241313733961,
+  "ck_top3_pct": 0.7641965306808242,
+  "ck_top5_pct": 0.8096916253941683,
   "ck_concentration": "HIGH RISK",
-  "yuma_aligned": 7,
+  "yuma_aligned": 5,
   "yuma_partial": 0,
-  "yuma_misaligned": 1,
+  "yuma_misaligned": 3,
   "validators": [
     {
       "uid": 0,
       "hotkey": "5E4WJ2tAZVDTRVvSFtR1jJqAX4CokgCt9JYmPzJMWDmUT3Ju",
       "hotkey_short": "5E4WJ2tA...",
-      "stake": 1367372.0,
-      "stake_pct": 0.7798651359033478,
+      "stake": 1352771.875,
+      "stake_pct": 0.7784102993857576,
       "tv": 0.9999847412109375,
       "alignment": "\u2705 ALIGNED",
       "take": 0.179995422293431,
-      "dividends": 0.7856717705726624,
+      "dividends": 0.7868314385414124,
       "incentive": 0.0
     },
     {
       "uid": 7,
       "hotkey": "5E2VGq3H5MzFRFtWr4pbRve2CG3NyWmsnLRb6nocHmMB455V",
       "hotkey_short": "5E2VGq3H...",
-      "stake": 210920.6875,
-      "stake_pct": 0.12029622562259214,
-      "tv": 0.9889371991157532,
+      "stake": 212216.65625,
+      "stake_pct": 0.12211344276078101,
+      "tv": 0.9940794706344604,
       "alignment": "\u2705 ALIGNED",
       "take": 0.179995422293431,
-      "dividends": 0.1253681182861328,
+      "dividends": 0.12295719981193542,
       "incentive": 0.0
     },
     {
       "uid": 33,
       "hotkey": "5CAQAgXxoU3NPo1YG5VQKz4Ackh7goNx3TvPD9A6LoqA7FmJ",
       "hotkey_short": "5CAQAgXx...",
-      "stake": 69795.6640625,
-      "stake_pct": 0.03980716662295701,
-      "tv": 0.9889371991157532,
+      "stake": 69900.8125,
+      "stake_pct": 0.04022223805135859,
+      "tv": 0.9940794706344604,
       "alignment": "\u2705 ALIGNED",
       "take": 0.0899977111467155,
-      "dividends": 0.03932249918580055,
+      "dividends": 0.03974975273013115,
       "incentive": 0.0
     },
     {
       "uid": 31,
       "hotkey": "5DZStHLC5VpuPKJ1XeAnsAB8hNL1Gkno2uzEGFeFT3WSL1o7",
       "hotkey_short": "5DZStHLC...",
-      "stake": 32622.021484375,
-      "stake_pct": 0.018605600537640116,
-      "tv": 0.9999847412109375,
-      "alignment": "\u2705 ALIGNED",
+      "stake": 32503.953125,
+      "stake_pct": 0.018703384030106244,
+      "tv": 0.0945754200220108,
+      "alignment": "\u274c MISALIGNED",
       "take": 0.179995422293431,
-      "dividends": 0.01738002523779869,
-      "incentive": 0.0
-    },
-    {
-      "uid": 2,
-      "hotkey": "5G9hfkx9wGB1CLMT9WXkpHSAiYzjZb5o1Boyq4KAdDhjwrc5",
-      "hotkey_short": "5G9hfkx9...",
-      "stake": 27655.431640625,
-      "stake_pct": 0.015772962262560416,
-      "tv": 0.9999847412109375,
-      "alignment": "\u2705 ALIGNED",
-      "take": 0.009994659342336155,
-      "dividends": 0.008560311049222946,
+      "dividends": 0.014480811543762684,
       "incentive": 0.0
     },
     {
       "uid": 50,
       "hotkey": "5EqgN8pHPoDeSpttybduYaMGannrZFcYDQjwMRDZK74wtg7U",
       "hotkey_short": "5EqgN8pH...",
-      "stake": 26355.171875,
-      "stake_pct": 0.015031373829545263,
+      "stake": 26400.646484375,
+      "stake_pct": 0.015191426960942615,
+      "tv": 0.08886854350566864,
+      "alignment": "\u274c MISALIGNED",
+      "take": 0.179995422293431,
+      "dividends": 0.013550011441111565,
+      "incentive": 0.0
+    },
+    {
+      "uid": 2,
+      "hotkey": "5G9hfkx9wGB1CLMT9WXkpHSAiYzjZb5o1Boyq4KAdDhjwrc5",
+      "hotkey_short": "5G9hfkx9...",
+      "stake": 25375.390625,
+      "stake_pct": 0.014601475517397784,
       "tv": 0.9999847412109375,
       "alignment": "\u2705 ALIGNED",
-      "take": 0.179995422293431,
-      "dividends": 0.015487907454371452,
+      "take": 0.009994659342336155,
+      "dividends": 0.013794155791401863,
       "incentive": 0.0
     },
     {
       "uid": 4,
       "hotkey": "5CGKJv9qfyWkYKAJsG4zW6SrxLkBeRgRL9v5AYy4uQ6is1o7",
       "hotkey_short": "5CGKJv9q...",
-      "stake": 13622.0751953125,
-      "stake_pct": 0.0077691963295123834,
-      "tv": 0.9889371991157532,
+      "stake": 13626.0986328125,
+      "stake_pct": 0.007840712622908013,
+      "tv": 0.9940794706344604,
       "alignment": "\u2705 ALIGNED",
       "take": 0.179995422293431,
-      "dividends": 0.00759899290278554,
+      "dividends": 0.007522698026150465,
       "incentive": 0.0
     },
     {
       "uid": 43,
       "hotkey": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
       "hotkey_short": "5E2LP6En...",
-      "stake": 3173.976318359375,
-      "stake_pct": 0.0018102414506596168,
-      "tv": 0.0944533422589302,
+      "stake": 3111.058349609375,
+      "stake_pct": 0.0017901613021973823,
+      "tv": 0.09666590392589569,
       "alignment": "\u274c MISALIGNED",
       "take": 0.0,
-      "dividends": 0.0005340657662600279,
+      "dividends": 0.0010681315325200558,
       "incentive": 0.0
     }
   ],
   "top_stakers": [
     {
       "uid": 0,
-      "stake": 1367372.0
+      "stake": 1352771.875
     },
     {
       "uid": 7,
-      "stake": 210920.6875
+      "stake": 212216.65625
     },
     {
       "uid": 33,
-      "stake": 69795.6640625
+      "stake": 69900.8125
     },
     {
       "uid": 31,
-      "stake": 32622.021484375
-    },
-    {
-      "uid": 2,
-      "stake": 27655.431640625
+      "stake": 32503.953125
     },
     {
       "uid": 50,
-      "stake": 26355.171875
+      "stake": 26400.646484375
+    },
+    {
+      "uid": 2,
+      "stake": 25375.390625
     },
     {
       "uid": 4,
-      "stake": 13622.0751953125
+      "stake": 13626.0986328125
     },
     {
       "uid": 43,
-      "stake": 3173.976318359375
+      "stake": 3111.058349609375
     },
     {
       "uid": 42,
-      "stake": 624.22119140625
+      "stake": 625.134033203125
     },
     {
       "uid": 83,
-      "stake": 285.7808837890625
+      "stake": 286.53631591796875
     },
     {
-      "uid": 79,
-      "stake": 158.4163055419922
+      "uid": 3,
+      "stake": 252.22401428222656
     },
     {
       "uid": 87,
@@ -176,15 +176,15 @@
     },
     {
       "uid": 36,
-      "stake": 141.8550567626953
+      "stake": 142.36065673828125
     },
     {
-      "uid": 3,
-      "stake": 41.63919448852539
+      "uid": 69,
+      "stake": 131.04635620117188
     },
     {
-      "uid": 80,
-      "stake": 40.580596923828125
+      "uid": 71,
+      "stake": 127.98744201660156
     }
   ]
 }
