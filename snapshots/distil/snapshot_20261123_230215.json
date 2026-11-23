@@ -1,0 +1,94 @@
+{
+  "subnet_name": "distil",
+  "netuid": 97,
+  "genesis_date": "2026-03-13",
+  "days_since_genesis": 255,
+  "owner_hotkey": "5G9ZvMXQEecYs8eA4xQ6Mrb9BHPQWs2g7u2RR6UXxrWQceZW",
+  "displaced_subnet": "FlameWire",
+  "block": 9572566,
+  "timestamp": "2026-11-23 23:01:09 UTC",
+  "tao_reserves": 10244.335446925,
+  "alpha_reserves": 1038009.486390466,
+  "alpha_out": 1320288.837360187,
+  "price": 0.009869216,
+  "moving_price": 0.009971983963623643,
+  "momentum_pct": -1.0305668761454643,
+  "genesis_momentum_clamped": false,
+  "emission_per_block": 0.001103968,
+  "emission_apy": 0.16013894078390117,
+  "price_apy": -11.78623575149771,
+  "combined_apy": -11.62609681071381,
+  "n_uids": 256,
+  "n_active": 3,
+  "n_validators": 3,
+  "total_stake": 1810694.201171875,
+  "uid_top1_pct": 0.8400653042438356,
+  "uid_top3_pct": 1.0,
+  "uid_top5_pct": 1.0,
+  "uid_concentration": "HIGH RISK",
+  "ck_top1_pct": 0.849557411570298,
+  "ck_top3_pct": 0.9120179958367115,
+  "ck_top5_pct": 0.9366018508679363,
+  "ck_concentration": "HIGH RISK",
+  "owner_uid": null,
+  "owner_stake": 0.0,
+  "owner_stake_pct": 0.0,
+  "yuma_aligned": 3,
+  "yuma_partial": 0,
+  "yuma_misaligned": 0,
+  "validators": [
+    {
+      "uid": 0,
+      "hotkey": "5EvHrbHz8rT8DrWazxFhzfMsmscFtPE3qhRDeY4ggKZrBcxZ",
+      "hotkey_short": "5EvHrbHz...",
+      "stake": 1521101.375,
+      "stake_pct": 0.8400653042438356,
+      "tv": 0.9999847412109375,
+      "alignment": "\u2705 ALIGNED",
+      "take": 0.179995422293431,
+      "dividends": 0.8401922583580017,
+      "incentive": 0.6000000238418579,
+      "is_owner": false
+    },
+    {
+      "uid": 28,
+      "hotkey": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
+      "hotkey_short": "5E2LP6En...",
+      "stake": 261601.515625,
+      "stake_pct": 0.14447581234627713,
+      "tv": 0.9999847412109375,
+      "alignment": "\u2705 ALIGNED",
+      "take": 0.0,
+      "dividends": 0.1443503499031067,
+      "incentive": 0.0,
+      "is_owner": false
+    },
+    {
+      "uid": 219,
+      "hotkey": "5G9hfkx9wGB1CLMT9WXkpHSAiYzjZb5o1Boyq4KAdDhjwrc5",
+      "hotkey_short": "5G9hfkx9...",
+      "stake": 27991.310546875,
+      "stake_pct": 0.01545888340988728,
+      "tv": 0.9999847412109375,
+      "alignment": "\u2705 ALIGNED",
+      "take": 0.009994659342336155,
+      "dividends": 0.015442130155861378,
+      "incentive": 0.0,
+      "is_owner": false
+    }
+  ],
+  "top_stakers": [
+    {
+      "uid": 0,
+      "stake": 1521101.375
+    },
+    {
+      "uid": 28,
+      "stake": 261601.515625
+    },
+    {
+      "uid": 219,
+      "stake": 27991.310546875
+    }
+  ]
+}
